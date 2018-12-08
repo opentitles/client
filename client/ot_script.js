@@ -153,18 +153,22 @@
 
     // Append 'clock' symbol to title
     const titleElement = document.querySelector(medium.title_query);
-    const inner = titleElement.innerHTML;
     const append = document.createElement('div');
     append.title = 'Click to open the OpenTitles overlay';
-    append.innerHTML = '';
+    append.textContent = '';
     append.classList.add('opentitles__button', 'opentitles__histicon');
 
-    // Append information card to symbol
+    // Append information card to body
     const card = document.createElement('div');
     card.classList.add('opentitles__container');
-    card.innerHTML = '<div class="opentitles__titlemeta"></div><ul class="opentitles__titlelist"></ul>';
+    const meta = document.createElement('div');
+    meta.classList.add('opentitles__titlemeta');
+    const list = document.createElement('ul');
+    list.classList.add('opentitles__titlelist');
+    card.appendChild(meta);
+    card.appendChild(list);
     document.body.appendChild(card);
-    titleElement.innerHTML = inner + append.outerHTML;
+    titleElement.appendChild(append);
 
     // Article meta
     document.querySelector('.opentitles__titlemeta').innerHTML = `<span><i class="opentitles__histicon" aria-hidden="true"></i> OpenTitles</span><div class="opentitles__closemodal">×</div>`;
@@ -172,7 +176,17 @@
     document.querySelector('.opentitles__closemodal').onclick = toggleModal;
 
     data.titles.forEach((title) => {
-      document.querySelector('.opentitles__titlelist').innerHTML += `<li class="opentitles__titleitem"><span class="opentitles__titledate">${title.datetime}: </span>${title.title}</li>`;
+      const item = document.createElement('li');
+      item.classList.add('opentitles__titleitem');
+      const date = document.createElement('span');
+      date.classList.add('opentitles__titledate');
+      date.innerText = `${title.datetime}: `;
+      const content = document.createElement('span');
+      content.innerText = title.title;
+      item.appendChild(date);
+      item.appendChild(content);
+
+      document.querySelector('.opentitles__titlelist').appendChild(item);
     });
   }
 
@@ -183,10 +197,22 @@
   };
 
   /**
+   * Compatiblity shim to retrieve the wrapped XHR object when using Firefox.
+   * @return {XMLHttpRequest} The propertly wrapped XHR object.
+   */
+  function getXMLHttp() {
+    try {
+      return XPCNativeWrapper(new window.wrappedJSObject.XMLHttpRequest());
+    } catch (evt) {
+      return new XMLHttpRequest();
+    }
+  }
+
+  /**
    * Make the request to the OpenTitles API
    */
   function sendRekest() {
-    const request = new XMLHttpRequest();
+    const request = getXMLHttp();
     const id = window.location.href.match(medium.id_mask)[0];
 
     request.open(
