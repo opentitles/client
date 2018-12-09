@@ -41,6 +41,7 @@
   async function retrieveArticles() {
     for (let i = 0; i < CONFIG.FEEDS.length; i++) {
       const SUBFEED = CONFIG.FEEDS[i];
+      let orgfeed = {items: []};
       for (let j = 0; j < SUBFEED.FEEDS.length; j++) {
         const feedname = SUBFEED.FEEDS[j];
         let feed = await parser.parseURL(SUBFEED.PREFIX + feedname + SUBFEED.SUFFIX);
@@ -51,8 +52,10 @@
           return item;
         });
 
-        removeDupesAndCheck(feed);
+        orgfeed.items.push(...feed.items);
       }
+
+      removeDupesAndCheck(orgfeed);
     }
   }
 

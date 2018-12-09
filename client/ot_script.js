@@ -227,10 +227,8 @@
 
         if (data) {
           // No use in poluting the DOM when we don't have any data anyway
-          console.info('Received response from API');
           buildModal(data);
         } else {
-          console.info('No content from OpenTitles API');
         }
       } else {
         console.error(`OpenTitles API could not be reached: ${request.status}: ${request.statusText}`);
