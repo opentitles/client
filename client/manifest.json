@@ -43,10 +43,15 @@
       "https://*.lc.nl/*",
       "https://*.rd.nl/*",
       "https://*.bnr.nl/*",
-      "https://*.elsevierweekblad.nl/*"
+      "https://*.elsevierweekblad.nl/*",
+      "https://*.abcnews.go.com/*"
     ],
     "js": ["ot_script.js"],
     "css": ["ot_style.css"],
     "run_at": "document_idle"
-  }]
+  }],
+
+  "web_accessible_resources":[
+    "media.json"
+  ]
 }
