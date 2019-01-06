@@ -1,3 +1,6 @@
+### 1.3
+Make the popup look a bit more polished.
+
 ### 1.2
 Added important features that will make it a lot easier to start adding more media down the line.
 

@@ -29,7 +29,7 @@
 }
 
 body, html {
-	width: 350px;
+	width: 550px;
   height: 100px;
 	margin: 0;
 	padding: 0;
@@ -63,7 +63,7 @@ body, html {
 }
 
 .suggestform {
-
+  white-space: pre-line;
 }
 
 .hidden {
