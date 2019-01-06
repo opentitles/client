@@ -4,7 +4,7 @@
   "name": "Opentitles",
   "short_name": "Opentitles",
   "description": "Show the changes to titles for several Dutch news outlets.",
-  "version": "1.1",
+  "version": "1.2",
   
   "icons": {
   	"16": "icons/logo16.png",
@@ -13,7 +13,9 @@
   },
 
   "browser_action": {
-    "default_icon": "icons/logo48.png"
+    "default_icon": "icons/logo48.png",
+    "default_title": "Suggest this website to OpenTitles",
+    "default_popup": "popup.html"
   },
   
   "content_scripts": [{
@@ -50,6 +52,10 @@
     "css": ["ot_style.css"],
     "run_at": "document_idle"
   }],
+
+  "permissions": [
+    "tabs"
+  ],
 
   "web_accessible_resources":[
     "media.json"

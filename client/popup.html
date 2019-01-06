@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+	
+	<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Fake News Blocker</title>
+		<script src="popup.js"></script>
+		<link rel="stylesheet" type="text/css" href="popup.css">
+	</head>
+	
+	<body>
+		
+		<div class="header">
+			<span>OpenTitles</span>
+		</div>
+		
+		<div class="main">
+			<div class="status"></div>
+			<form class="suggestform hidden" action="#">
+        <label for="hasrss">Does this website offer <a href="https://en.wikipedia.org/wiki/RSS" target="_blank" rel="noopener">RSS</a>?</label><input type="checkbox" name="hasrss" id="hasrss">
+        <label for="rss_overview">If so, at what URL?</label><input type="url" name="rss_overview" id="rss_overview">
+        <label for="hasid"></label><input type="checkbox" name="hasid" id="hasid">
+        <input type="submit" value="Submit">
+			</form>
+			
+		</div>
+		
+	</body>
+	
+</html>

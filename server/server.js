@@ -12,7 +12,10 @@
   const cors = require('cors');
   const MongoClient = require('mongodb').MongoClient;
   const url = 'mongodb://localhost:27017/opentitles';
-  const CONFIG = JSON.parse(fs.readFileSync('config.json'));
+  const CONFIG = JSON.parse(fs.readFileSync('media.json'));
+
+  app.use(express.json());
+  app.use(cors({credentials: true, origin: true}));
 
   let dbo;
 
@@ -41,10 +44,10 @@
   async function retrieveArticles() {
     for (let i = 0; i < CONFIG.FEEDS.length; i++) {
       const SUBFEED = CONFIG.FEEDS[i];
-      let orgfeed = {items: []};
+      const orgfeed = {items: []};
       for (let j = 0; j < SUBFEED.FEEDS.length; j++) {
         const feedname = SUBFEED.FEEDS[j];
-        let feed = await parser.parseURL(SUBFEED.PREFIX + feedname + SUBFEED.SUFFIX);
+        const feed = await parser.parseURL(SUBFEED.PREFIX + feedname + SUBFEED.SUFFIX);
 
         feed.items = feed.items.map((item) => {
           item.artid = guidReducer(item[SUBFEED.ID_CONTAINER], SUBFEED.ID_MASK);
@@ -97,7 +100,7 @@
 
       if (!res) {
         // Does not exit yet in DB
-        let newEntry = {
+        const newEntry = {
           org: article.org,
           articleID: article.artid,
           link: article.link,
@@ -144,8 +147,9 @@
       if (typeof(callback) == 'function') {
         callback(res);
       }
-      return res;
     });
+
+    return res;
   }
 
   /**
@@ -164,7 +168,7 @@
   }
 
   // API Endpoints
-  app.get('/opentitles/article/:org/:id', cors({credentials: true, origin: true}), function(req, res) {
+  app.get('/opentitles/article/:org/:id', function(req, res) {
     const artid = req.params.id;
     const artorg = req.params.org;
 
@@ -186,6 +190,54 @@
 
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(article, null, 4));
+    });
+  });
+
+  app.post('/opentitles/suggest', function(req, res) {
+    res.end();
+
+    let bod = req.body;
+    if (typeof(bod) !== 'object') {
+      bod = JSON.parse(bod);
+    }
+
+    if (!bod.url) {
+      return;
+    }
+
+    const find = {
+      url: bod.url,
+    };
+
+    dbo.collection('suggestions').findOne(find, function(err, suggestion) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      if (!suggestion) {
+        const newentry = {
+          url: bod.url,
+          rss_present: bod.hasrss,
+          rss_overview: bod.rss_overview,
+          has_id: bod.has_id,
+          datetime: moment().format('MMMM Do YYYY, h:mm:ss a'),
+        };
+
+        dbo.collection('suggestions').insertOne(newentry);
+      }
+    });
+  });
+
+  app.get('/opentitles/suggest', function(req, res) {
+    dbo.collection('suggestions').find({}).toArray(function(err, suggestions) {
+      if (err) {
+        console.error(err);
+        return;
+      }
+
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify(suggestions, null, 4));
     });
   });
 

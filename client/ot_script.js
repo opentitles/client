@@ -1,8 +1,10 @@
 (() => {
   'use strict';
 
+  const endpoint = 'https://floris.amsterdam';
+
   const extapi = getBrowserAPI();
-  makeRequest(extapi.extension.getURL('/media.json')).then((result) => {
+  makeGetRequest(extapi.extension.getURL('/media.json')).then((result) => {
     if (typeof(result) !== 'object') {
       result = JSON.parse(result);
     }
@@ -36,9 +38,13 @@
       return;
     }
 
-    makeRequest(`https://floris.amsterdam/opentitles/article/${medium.NAME}/${window.location.href.match(medium.ID_MASK)[0]}`).then((titlehist) => {
+    makeGetRequest(endpoint + `/opentitles/article/${medium.NAME}/${window.location.href.match(medium.ID_MASK)[0]}`).then((titlehist) => {
       if (typeof(titlehist) !== 'object') {
         titlehist = JSON.parse(titlehist);
+      }
+
+      if (!titlehist) {
+        return;
       }
 
       buildModal(titlehist, medium);
@@ -46,15 +52,14 @@
   });
 
   /**
-   * Make a request to a given URL - use with 'await'.
+   * Make a GET request to a given URL - use with 'await'.
    * @param {String} url The target for the XMLHttpRequest.
-   * @param {String} method The HTTP method to use - defaults to 'GET'.
    * @return {Promise} A promise that resolves with the result of the XMLHttpRequest to the given URL.
    */
-  function makeRequest(url, method = 'GET') {
+  function makeGetRequest(url) {
     return new Promise((resolve, reject) => {
       const xhr = getXHR();
-      xhr.open(method, url);
+      xhr.open('GET', url);
       xhr.onload = function() {
         if (this.status >= 200 && this.status < 300) {
           resolve(xhr.response);
