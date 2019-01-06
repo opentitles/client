@@ -1,10 +1,10 @@
 {
   "manifest_version": 2,
 
-  "name": "Opentitles",
-  "short_name": "Opentitles",
-  "description": "Show the changes to titles for several Dutch news outlets.",
-  "version": "1.2",
+  "name": "OpenTitles",
+  "short_name": "OpenTitles",
+  "description": "Show the changes to titles for several news outlets.",
+  "version": "1.3",
   
   "icons": {
   	"16": "icons/logo16.png",
