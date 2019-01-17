@@ -107,15 +107,14 @@
    * @param {Object} medium The medium corresponding to this domain, as defined in media.json.
    * @return {Promise} A promise that will resolve with the ID for this article/page, or null if none is found.
    */
-  function getIdForMedium(medium) {   
+  function getIdForMedium(medium) {
     return new Promise(async (resolve, reject) => {
       switch (medium.PAGE_ID_LOCATION) {
         case 'var':
-
           // Extensions are sandboxed as far global variables like window are concerned - the DOM is shared however.
-          // For that reason we'll use this real fucking stupid workaround to retrieve window[first_var], since 
+          // For that reason we'll use this real stupid workaround to retrieve window[first_var], since we cant JSON.stringify window.
           const scriptTag = document.createElement('script');
-          const tagID = 'ot_window_extractor_' + guid();
+          const tagID = 'ot_window_extractor_' + randomstring();
           scriptTag.id = tagID;
           scriptTag.type = 'text/javascript';
           scriptTag.text = `document.getElementById('${tagID}').innerText = JSON.stringify(window['${medium.PAGE_ID_QUERY}']);`;
@@ -206,12 +205,11 @@
     }
   }
 
-  function guid() {
-    function s4() {
-      return Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+  /**
+   * Generate a 16-char random string that conforms to /[0-9A-Z]{16}/
+   * @return {String} A string consisting of 16 random alphanumeric uppercase characters.
+   */
+  function randomstring() {
+    return (Math.random().toString(36).substring(5) + Math.random().toString(36).substring(5)).toUpperCase();
   }
 })();
