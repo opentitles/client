@@ -6,6 +6,10 @@
   const extapi = getBrowserAPI();
 
   makeGetRequest(extapi.extension.getURL('/media.json')).then(async (result) => {
+    if (!result) {
+      throw new Error('Media.json could not be loaded. This is most likely because it\'s not present in the extension directory, or because it\'s not defined in manifest.json.');
+    }
+
     if (typeof(result) !== 'object') {
       result = JSON.parse(result);
     }

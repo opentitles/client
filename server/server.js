@@ -17,7 +17,10 @@
   const cors = require('cors');
   const MongoClient = require('mongodb').MongoClient;
   const url = 'mongodb://localhost:27017/opentitles';
-  const CONFIG = JSON.parse(fs.readFileSync('media.json'));
+
+  if (!fs.existsSync('media.json')) {
+    throw new Error('Media.json could not be found in the server directory.');
+  } const CONFIG = JSON.parse(fs.readFileSync('media.json'));
 
   app.use(express.json());
   app.use(cors({credentials: true, origin: true}));
