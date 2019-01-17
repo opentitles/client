@@ -46,7 +46,8 @@
       "https://*.rd.nl/*",
       "https://*.bnr.nl/*",
       "https://*.elsevierweekblad.nl/*",
-      "https://*.abcnews.go.com/*"
+      "https://*.abcnews.go.com/*",
+      "https://*.washingtonpost.com/*"
     ],
     "js": ["ot_script.js"],
     "css": ["ot_style.css"],

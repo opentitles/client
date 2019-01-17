@@ -4,6 +4,11 @@
   const Parser = require('rss-parser');
   const parser = new Parser({
     headers: {'User-Agent': 'OpenTitles Scraper by floris@debijl.xyz'},
+    timeout: 10 * 1000,
+    maxRedirects: 25,
+    customFields: {
+      item: ['wp:arc_uuid'],
+    },
   });
   const moment = require('moment');
   const fs = require('fs');
@@ -42,23 +47,41 @@
    * Iterate over all RSS feeds and check for each article if we've seen it already or not
    */
   async function retrieveArticles() {
-    for (let i = 0; i < CONFIG.FEEDS.length; i++) {
-      const SUBFEED = CONFIG.FEEDS[i];
-      const orgfeed = {items: []};
-      for (let j = 0; j < SUBFEED.FEEDS.length; j++) {
-        const feedname = SUBFEED.FEEDS[j];
-        const feed = await parser.parseURL(SUBFEED.PREFIX + feedname + SUBFEED.SUFFIX);
+    for (const countrykey in CONFIG.FEEDS) {
+      if (CONFIG.FEEDS.hasOwnProperty(countrykey)) {
+        const countryfeeds = CONFIG.FEEDS[countrykey];
+        for (let i = 0; i < countryfeeds.length; i++) {
+          const org = countryfeeds[i];
+          const orgfeed = {items: []};
+          for (let j = 0; j < org.FEEDS.length; j++) {
+            const feedname = org.FEEDS[j];
+            const [err, feed] = await to(parser.parseURL(org.PREFIX + feedname + org.SUFFIX));
 
-        feed.items = feed.items.map((item) => {
-          item.artid = guidReducer(item[SUBFEED.ID_CONTAINER], SUBFEED.ID_MASK);
-          item.org = SUBFEED.NAME;
-          return item;
-        });
+            if (err) {
+              console.log(err);
+              continue;
+            }
 
-        orgfeed.items.push(...feed.items);
+            feed.items = feed.items.map((item) => {
+              item.artid = guidReducer(item[org.ID_CONTAINER], org.ID_MASK);
+
+              if (!item.artid) {
+                return false;
+              }
+
+              item.org = org.NAME;
+              return item;
+            });
+
+            // Remove articles for which no guid exists or none was found
+            feed.items = feed.items.filter(Boolean);
+
+            orgfeed.items.push(...feed.items);
+          }
+
+          removeDupesAndCheck(orgfeed);
+        }
       }
-
-      removeDupesAndCheck(orgfeed);
     }
   }
 
@@ -68,7 +91,7 @@
    */
   function removeDupesAndCheck(feed) {
     // Reduce feed items to unique ID's only
-    let seen = {};
+    const seen = {};
     feed.items = feed.items.filter((item) => {
       // Make sure we have an articleID and organisation
       if (!item.artid || !item.org) {
@@ -130,9 +153,9 @@
 
   /**
    * Find an article in the database for a given organisation and ID.
+   * Returns the article if found, null if not found and [null] if an error occured.
    * @param {object} find Object with org and articleid to query with the DB.
    * @param {function} callback Called once a result is found
-   * @return {object} Returns the article if found, null if not found and [null] if an error occured.
    */
   function findArticle(find, callback) {
     dbo.collection('articles').findOne(find, function(err, res) {
@@ -148,8 +171,6 @@
         callback(res);
       }
     });
-
-    return res;
   }
 
   /**
@@ -159,12 +180,28 @@
    * @return {string} The article ID contained within the GUID.
    */
   function guidReducer(guid, mask) {
+    if (!guid) {
+      return false;
+    }
+
     const matches = guid.match(mask);
     if (!matches) {
       return false;
     } else {
       return matches[0];
     }
+  }
+
+  /**
+   * Await a promise and return its error if one occurs.
+   * @param {Promise} promise
+   * @return {[String, Promise]} An error (null if none occurred) and the result of the promise.
+   */
+  function to(promise) {
+    return promise.then((data) => {
+      return [null, data];
+    })
+        .catch((err) => [err]);
   }
 
   // API Endpoints

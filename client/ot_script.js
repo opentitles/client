@@ -4,7 +4,8 @@
   const endpoint = 'https://floris.amsterdam';
 
   const extapi = getBrowserAPI();
-  makeGetRequest(extapi.extension.getURL('/media.json')).then((result) => {
+
+  makeGetRequest(extapi.extension.getURL('/media.json')).then(async (result) => {
     if (typeof(result) !== 'object') {
       result = JSON.parse(result);
     }
@@ -27,6 +28,7 @@
 
     // No entry for medium, exit.
     if (!medium) {
+      console.log('No entry for medium, exiting');
       return;
     }
 
@@ -38,17 +40,21 @@
       return;
     }
 
-    makeGetRequest(endpoint + `/opentitles/article/${medium.NAME}/${window.location.href.match(medium.ID_MASK)[0]}`).then((titlehist) => {
-      if (typeof(titlehist) !== 'object') {
-        titlehist = JSON.parse(titlehist);
-      }
+    setTimeout(async () => {
+      const id = await getIdForMedium(medium);
 
-      if (!titlehist) {
-        return;
-      }
-
-      buildModal(titlehist, medium);
-    });
+      makeGetRequest(endpoint + `/opentitles/article/${medium.NAME}/${id}`).then((titlehist) => {
+        if (typeof(titlehist) !== 'object') {
+          titlehist = JSON.parse(titlehist);
+        }
+  
+        if (!titlehist) {
+          return;
+        }
+  
+        buildModal(titlehist, medium);
+      });
+    }, 500)
   });
 
   /**
@@ -94,6 +100,43 @@
         return null;
       }
     }
+  }
+
+  /**
+   * Retrieve the ID for this article/page so it can be used to query the API for the title history.
+   * @param {Object} medium The medium corresponding to this domain, as defined in media.json.
+   * @return {Promise} A promise that will resolve with the ID for this article/page, or null if none is found.
+   */
+  function getIdForMedium(medium) {   
+    return new Promise(async (resolve, reject) => {
+      switch (medium.PAGE_ID_LOCATION) {
+        case 'var':
+
+          // Extensions are sandboxed as far global variables like window are concerned - the DOM is shared however.
+          // For that reason we'll use this real fucking stupid workaround to retrieve window[first_var], since 
+          const scriptTag = document.createElement('script');
+          const tagID = 'ot_window_extractor_' + guid();
+          scriptTag.id = tagID;
+          scriptTag.type = 'text/javascript';
+          scriptTag.text = `document.getElementById('${tagID}').innerText = JSON.stringify(window['${medium.PAGE_ID_QUERY}']);`;
+          document.body.appendChild(scriptTag);
+
+          const result = JSON.parse(document.querySelector(`#${tagID}`).innerText);
+          resolve(result);
+          return result;
+          break;
+        case 'page':
+          // Not yet implemented
+          resolve(null);
+          break;
+        case 'url':
+          resolve(window.location.hostname.match(medium.ID_MASK)[0]);
+          break;
+        default:
+          resolve(window.location.hostname.match(medium.ID_MASK)[0]);
+          break;
+      }
+    });
   }
 
   /**
@@ -161,5 +204,14 @@
     } catch (evt) {
       return new XMLHttpRequest();
     }
+  }
+
+  function guid() {
+    function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
   }
 })();

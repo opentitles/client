@@ -1,3 +1,11 @@
+### 1.4
+Add two new ways to extract the article ID from a page: var and page. 
+Previously the ID had to be included in the URL for the plugin to be able to match an article to our records, now it can also be extracted from a global/window JS variable or an element on the page.
+This update also includes definitions for some of the largest US media
+
+- Fixed media.json parser in server.js - this should be refactored into a more readable set of methods in the future.
+- 
+
 ### 1.3
 Make the popup look a bit more polished.
 
