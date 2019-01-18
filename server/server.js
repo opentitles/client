@@ -42,6 +42,10 @@
     dbo = database.db('opentitles');
   });
 
+  setTimeout(() => {
+    retrieveArticles();
+  }, 5000);
+
   setInterval(() => {
     retrieveArticles();
   }, CONFIG.SCRAPER_INTERVAL * 1000);
@@ -132,7 +136,7 @@
           org: article.org,
           articleID: article.artid,
           sourcefeed: article.sourcefeed,
-          lang: item.lang,
+          lang: article.lang,
           link: article.link,
           titles: [{title: article.title, datetime: moment(article.pubDate).format('MMMM Do YYYY, h:mm:ss a')}],
           first_seen: moment().format('MMMM Do YYYY, h:mm:ss a'),
@@ -213,8 +217,8 @@
 
   // API Endpoints
   app.get('/opentitles/article/:org/:id', function(req, res) {
-    const artid = req.params.id;
-    const artorg = req.params.org;
+    const artid = decodeURIComponent(req.params.id);
+    const artorg = decodeURIComponent(req.params.org);
 
     if (!artid || !artorg || !artid.match(/[a-z0-9]+/)) {
       res.sendStatus(400);

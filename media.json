@@ -587,7 +587,6 @@
           "jp",
           "pt_br",
           "gr",
-          "en_asia",
           "be",
           "cs",
           "pt",
@@ -601,10 +600,9 @@
           "ar",
           "de_at",
           "de_ch",
-          "fr_be",
-          "es_latam"
+          "fr_be"
         ],
-        "ID_CONTAINER": "guid",
+        "ID_CONTAINER": "link",
         "ID_MASK": "(\\b[a-z_]{2,5})\/(article)\/([a-z0-9]{6}\\b)",
         "PAGE_ID_LOCATION": "url",
         "PAGE_ID_QUERY": "",
@@ -619,7 +617,7 @@
           "en_us",
           "en_ca"
         ],
-        "ID_CONTAINER": "guid",
+        "ID_CONTAINER": "link",
         "ID_MASK": "(\b[a-z_]{2,5})\/(article)\/([a-z0-9]{6}\b)",
         "PAGE_ID_LOCATION": "url",
         "PAGE_ID_QUERY": "",

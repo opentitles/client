@@ -47,7 +47,7 @@
     setTimeout(async () => {
       const id = await getIdForMedium(medium);
 
-      makeGetRequest(endpoint + `/opentitles/article/${medium.NAME}/${id}`).then((titlehist) => {
+      makeGetRequest(endpoint + `/opentitles/article/${encodeURIComponent(medium.NAME)}/${encodeURIComponent(id)}`).then((titlehist) => {
         if (typeof(titlehist) !== 'object') {
           titlehist = JSON.parse(titlehist);
         }
