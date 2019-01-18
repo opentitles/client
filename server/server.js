@@ -61,7 +61,7 @@
             const [err, feed] = await to(parser.parseURL(org.PREFIX + feedname + org.SUFFIX));
 
             if (err) {
-              console.log(err);
+              console.log(`Could not retrieve ${org.PREFIX + feedname + org.SUFFIX}`);
               continue;
             }
 
@@ -73,6 +73,8 @@
               }
 
               item.org = org.NAME;
+              item.sourcefeed = feedname;
+              item.lang = countrykey;
               return item;
             });
 
@@ -96,7 +98,7 @@
     // Reduce feed items to unique ID's only
     const seen = {};
     feed.items = feed.items.filter((item) => {
-      // Make sure we have an articleID and organisation
+      // Required variables
       if (!item.artid || !item.org) {
         return false;
       }
@@ -129,13 +131,15 @@
         const newEntry = {
           org: article.org,
           articleID: article.artid,
+          sourcefeed: article.sourcefeed,
+          lang: item.lang,
           link: article.link,
           titles: [{title: article.title, datetime: moment(article.pubDate).format('MMMM Do YYYY, h:mm:ss a')}],
           first_seen: moment().format('MMMM Do YYYY, h:mm:ss a'),
           pub_date: moment(article.pubDate).format('MMMM Do YYYY, h:mm:ss a'),
         };
 
-        // console.log(`[${article.org}:${article.artid}] Added new article to collection`);
+        console.log(`[${article.org}:${article.artid}] Added new article to collection`);
 
         dbo.collection('articles').insertOne(newEntry);
         return;
@@ -145,7 +149,7 @@
         // Article was already seen but we have a new title, add the latest title
         res.titles.push({title: article.title, datetime: moment().format('MMMM Do YYYY, h:mm:ss a')});
         dbo.collection('articles').replaceOne(find, res);
-        // console.log(`[${article.org}:${article.artid}] New title added for article`);
+        console.log(`[${article.org}:${article.artid}] New title added for article`);
         return;
       }
 

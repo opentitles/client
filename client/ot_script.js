@@ -124,19 +124,26 @@
           scriptTag.text = `document.getElementById('${tagID}').innerText = JSON.stringify(window['${medium.PAGE_ID_QUERY}']);`;
           document.body.appendChild(scriptTag);
 
-          const result = JSON.parse(document.querySelector(`#${tagID}`).innerText);
-          resolve(result);
-          return result;
-          break;
+          let result = null;
+
+          try {
+            result = JSON.parse(document.querySelector(`#${tagID}`).innerText);
+          } catch (e) {
+            console.warn(`Global variable ${medium.PAGE_ID_LOCATION} was undefined at runtime.`);
+          } finally {
+            resolve(result);
+            return result;
+            break;
+          };
         case 'page':
           // Not yet implemented
           resolve(null);
           break;
         case 'url':
-          resolve(window.location.hostname.match(medium.ID_MASK)[0]);
+          resolve(window.location.href.match(medium.ID_MASK)[0]);
           break;
         default:
-          resolve(window.location.hostname.match(medium.ID_MASK)[0]);
+          resolve(window.location.href.match(medium.ID_MASK)[0]);
           break;
       }
     });
@@ -148,7 +155,8 @@
    * @param {Object} medium The medium corresponding to this domain, as defined in media.json.
    */
   function buildModal(data, medium) {
-    document.body.classList.add(medium.NAME.replace(/\./gi, ''));
+    // Remove periods and spaces from the medium name, these are not allowed in classes.
+    document.body.classList.add(medium.NAME.replace(/\.| /gi, ''));
 
     // Append 'clock' symbol to title
     const titleElement = document.querySelector(medium.TITLE_QUERY);
