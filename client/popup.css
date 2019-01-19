@@ -29,7 +29,7 @@
 }
 
 body, html {
-	width: 550px;
+	width: 450px;
   height: 100px;
 	margin: 0;
 	padding: 0;
@@ -57,7 +57,7 @@ body, html {
 }
 
 .main {
-	padding: 8px;
+	padding: 12px;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
 }
@@ -68,4 +68,48 @@ body, html {
 
 .hidden {
   display: none;
+}
+
+input[type="submit"] {
+  width: 100%;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+  padding: 10px;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  outline: none;
+  position: relative;
+  background: #545454;
+  color: #fff;
+  box-shadow: 0 6px #303030;
+  -webkit-transition: none;
+  -moz-transition: none;
+  transition: none;
+  margin-top: -10px;
+}
+
+input[type="submit"]:hover {
+  box-shadow: 0 4px #303030;
+  top: 2px;
+}
+
+input[type="submit"]:active {
+  box-shadow: 0 0 #303030;
+  top: 6px;
+}
+
+td {
+  padding: 3px;
+  vertical-align: top;
+  font-size: 14px;
+}
+
+p {
+  margin: 0;
 }

@@ -16,12 +16,23 @@
 		</div>
 		
 		<div class="main">
-			<div class="status"></div>
+      <div class="status"></div>
+      <p>All questions/checkboxes are optional, but the more you can fill out the easier it is for me to add this website to the list of media.</p>
 			<form class="suggestform hidden" action="#">
-        <p>All questions/checkboxes are optional, but the more you can fill out the easier it is for me to add them to the list of media.</p>
-        <label for="hasrss">Does this website offer <a href="https://en.wikipedia.org/wiki/RSS" target="_blank" rel="noopener">RSS</a>?</label><input type="checkbox" name="hasrss" id="hasrss">
-        <label for="rss_overview">If so, at what URL?</label><input type="url" name="rss_overview" id="rss_overview">
-        <label for="hasid">Do the links contain an ID? This usually takes the form of a string of numbers in the URL, such as .../articles/249249</label><input type="checkbox" name="hasid" id="hasid">
+          <table>
+            <tr>
+              <td><label for="hasrss">Does this website offer <a href="https://en.wikipedia.org/wiki/RSS" target="_blank" rel="noopener">RSS</a>?</label></td>
+              <td><input type="checkbox" name="hasrss" id="hasrss"></td>
+            </tr>
+            <tr>
+              <td><label for="rss_overview">If so, at what URL?</label></td>
+              <td><input type="url" name="rss_overview" id="rss_overview"></span></td>
+            </tr>
+            <tr>
+              <td><label for="hasid">Do the links contain an ID? (Such as 381389 or nexjzd)</label></td>
+              <td><input type="checkbox" name="hasid" id="hasid"></span>   </td>
+            </tr>
+        </table> 
         <input type="submit" value="Submit">
 			</form>
 			
