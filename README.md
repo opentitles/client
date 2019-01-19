@@ -10,7 +10,7 @@ If you would like to contribute to the list of media being tracked, please check
 
 'History' logo by Sugeng Santoso
 
-### FAQ
-
-**Why does Chrome say this extension needs to read my browser history?**
+### FAQ  
+  
+**Why does Chrome say this extension needs to read my browser history?**  
 The '[tabs](https://developer.chrome.com/extensions/tabs)' permission is required for the popup to know which website you're looking at, so that it can tell whether the OpenTitles API is already tracking that website or not. This is the only part of the tabs API that is used by this plugin, it does not actually read your browser history (you may verify this by viewing ot_script.js in your installation).
