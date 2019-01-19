@@ -9,3 +9,8 @@ OpenTitles is a browser addon that currently tracks changes to over 40 news site
 If you would like to contribute to the list of media being tracked, please check the [wiki](https://github.com/Fdebijl/OpenTitles/wiki) for instructions on formatting a news website for this list. If you can't be bothered to figure that out, you can simply click the extension icon when it's installed - a window will pop up with a form to suggest the website you're currently on should be tracked by OpenTitles.
 
 'History' logo by Sugeng Santoso
+
+### FAQ
+
+**Why does Chrome say this extension needs to read my browser history?**
+The '[tabs](https://developer.chrome.com/extensions/tabs)' permission is required for the popup to know which website you're looking at, so that it can tell whether the OpenTitles API is already tracking that website or not. This is the only part of the tabs API that is used by this plugin, it does not actually read your browser history (you may verify this by viewing ot_script.js in your installation).
