@@ -4,18 +4,20 @@
   const Parser = require('rss-parser');
   const parser = new Parser({
     headers: {'User-Agent': 'OpenTitles Scraper by floris@debijl.xyz'},
+    timeout: 10 * 1000,
+    maxRedirects: 25,
+    customFields: {
+      item: ['wp:arc_uuid'],
+    },
   });
   const moment = require('moment');
   const fs = require('fs');
-  const express = require('express');
-  const app = express();
-  const cors = require('cors');
   const MongoClient = require('mongodb').MongoClient;
   const url = 'mongodb://localhost:27017/opentitles';
-  const CONFIG = JSON.parse(fs.readFileSync('media.json'));
 
-  app.use(express.json());
-  app.use(cors({credentials: true, origin: true}));
+  if (!fs.existsSync('media.json')) {
+    throw new Error('Media.json could not be found in the server directory.');
+  } const CONFIG = JSON.parse(fs.readFileSync('media.json'));
 
   let dbo;
 
@@ -34,6 +36,10 @@
     dbo = database.db('opentitles');
   });
 
+  setTimeout(() => {
+    retrieveArticles();
+  }, 5000);
+
   setInterval(() => {
     retrieveArticles();
   }, CONFIG.SCRAPER_INTERVAL * 1000);
@@ -42,23 +48,43 @@
    * Iterate over all RSS feeds and check for each article if we've seen it already or not
    */
   async function retrieveArticles() {
-    for (let i = 0; i < CONFIG.FEEDS.length; i++) {
-      const SUBFEED = CONFIG.FEEDS[i];
-      const orgfeed = {items: []};
-      for (let j = 0; j < SUBFEED.FEEDS.length; j++) {
-        const feedname = SUBFEED.FEEDS[j];
-        const feed = await parser.parseURL(SUBFEED.PREFIX + feedname + SUBFEED.SUFFIX);
+    for (const countrykey in CONFIG.FEEDS) {
+      if (CONFIG.FEEDS.hasOwnProperty(countrykey)) {
+        const countryfeeds = CONFIG.FEEDS[countrykey];
+        for (let i = 0; i < countryfeeds.length; i++) {
+          const org = countryfeeds[i];
+          const orgfeed = {items: []};
+          for (let j = 0; j < org.FEEDS.length; j++) {
+            const feedname = org.FEEDS[j];
+            const [err, feed] = await to(parser.parseURL(org.PREFIX + feedname + org.SUFFIX));
 
-        feed.items = feed.items.map((item) => {
-          item.artid = guidReducer(item[SUBFEED.ID_CONTAINER], SUBFEED.ID_MASK);
-          item.org = SUBFEED.NAME;
-          return item;
-        });
+            if (err) {
+              console.log(`Could not retrieve ${org.PREFIX + feedname + org.SUFFIX}`);
+              continue;
+            }
 
-        orgfeed.items.push(...feed.items);
+            feed.items = feed.items.map((item) => {
+              item.artid = guidReducer(item[org.ID_CONTAINER], org.ID_MASK);
+
+              if (!item.artid) {
+                return false;
+              }
+
+              item.org = org.NAME;
+              item.sourcefeed = feedname;
+              item.lang = countrykey;
+              return item;
+            });
+
+            // Remove articles for which no guid exists or none was found
+            feed.items = feed.items.filter(Boolean);
+
+            orgfeed.items.push(...feed.items);
+          }
+
+          removeDupesAndCheck(orgfeed);
+        }
       }
-
-      removeDupesAndCheck(orgfeed);
     }
   }
 
@@ -68,9 +94,9 @@
    */
   function removeDupesAndCheck(feed) {
     // Reduce feed items to unique ID's only
-    let seen = {};
+    const seen = {};
     feed.items = feed.items.filter((item) => {
-      // Make sure we have an articleID and organisation
+      // Required variables
       if (!item.artid || !item.org) {
         return false;
       }
@@ -103,13 +129,15 @@
         const newEntry = {
           org: article.org,
           articleID: article.artid,
+          sourcefeed: article.sourcefeed,
+          lang: article.lang,
           link: article.link,
           titles: [{title: article.title, datetime: moment(article.pubDate).format('MMMM Do YYYY, h:mm:ss a')}],
           first_seen: moment().format('MMMM Do YYYY, h:mm:ss a'),
           pub_date: moment(article.pubDate).format('MMMM Do YYYY, h:mm:ss a'),
         };
 
-        // console.log(`[${article.org}:${article.artid}] Added new article to collection`);
+        console.log(`[${article.org}:${article.artid}] Added new article to collection`);
 
         dbo.collection('articles').insertOne(newEntry);
         return;
@@ -119,7 +147,7 @@
         // Article was already seen but we have a new title, add the latest title
         res.titles.push({title: article.title, datetime: moment().format('MMMM Do YYYY, h:mm:ss a')});
         dbo.collection('articles').replaceOne(find, res);
-        // console.log(`[${article.org}:${article.artid}] New title added for article`);
+        console.log(`[${article.org}:${article.artid}] New title added for article`);
         return;
       }
 
@@ -130,9 +158,9 @@
 
   /**
    * Find an article in the database for a given organisation and ID.
+   * Returns the article if found, null if not found and [null] if an error occured.
    * @param {object} find Object with org and articleid to query with the DB.
    * @param {function} callback Called once a result is found
-   * @return {object} Returns the article if found, null if not found and [null] if an error occured.
    */
   function findArticle(find, callback) {
     dbo.collection('articles').findOne(find, function(err, res) {
@@ -148,8 +176,6 @@
         callback(res);
       }
     });
-
-    return res;
   }
 
   /**
@@ -159,6 +185,10 @@
    * @return {string} The article ID contained within the GUID.
    */
   function guidReducer(guid, mask) {
+    if (!guid) {
+      return false;
+    }
+
     const matches = guid.match(mask);
     if (!matches) {
       return false;
@@ -167,79 +197,15 @@
     }
   }
 
-  // API Endpoints
-  app.get('/opentitles/article/:org/:id', function(req, res) {
-    const artid = req.params.id;
-    const artorg = req.params.org;
-
-    if (!artid || !artorg || !artid.match(/[a-z0-9]+/)) {
-      res.sendStatus(400);
-      return;
-    }
-
-    const find = {
-      org: artorg,
-      articleID: artid,
-    };
-
-    dbo.collection('articles').findOne(find, function(err, article) {
-      if (err) {
-        console.error(err);
-        return;
-      }
-
-      res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify(article, null, 4));
-    });
-  });
-
-  app.post('/opentitles/suggest', function(req, res) {
-    res.end();
-
-    let bod = req.body;
-    if (typeof(bod) !== 'object') {
-      bod = JSON.parse(bod);
-    }
-
-    if (!bod.url) {
-      return;
-    }
-
-    const find = {
-      url: bod.url,
-    };
-
-    dbo.collection('suggestions').findOne(find, function(err, suggestion) {
-      if (err) {
-        console.error(err);
-        return;
-      }
-
-      if (!suggestion) {
-        const newentry = {
-          url: bod.url,
-          rss_present: bod.hasrss,
-          rss_overview: bod.rss_overview,
-          has_id: bod.has_id,
-          datetime: moment().format('MMMM Do YYYY, h:mm:ss a'),
-        };
-
-        dbo.collection('suggestions').insertOne(newentry);
-      }
-    });
-  });
-
-  app.get('/opentitles/suggest', function(req, res) {
-    dbo.collection('suggestions').find({}).toArray(function(err, suggestions) {
-      if (err) {
-        console.error(err);
-        return;
-      }
-
-      res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify(suggestions, null, 4));
-    });
-  });
-
-  app.listen(8083);
+  /**
+   * Await a promise and return its error if one occurs.
+   * @param {Promise} promise
+   * @return {[String, Promise]} An error (null if none occurred) and the result of the promise.
+   */
+  function to(promise) {
+    return promise.then((data) => {
+      return [null, data];
+    })
+        .catch((err) => [err]);
+  }
 })();

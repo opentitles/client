@@ -1,9 +1,14 @@
 module.exports = {
-	apps: [
+  apps: [
     {
-    	name: 'OpenTitles API',
-    	script: 'server.js',
-			watch: ["server.js", "package.json", "config.json"]
-    }
-  ]
+      name: 'OpenTitles Crawler',
+      script: 'crawler.js',
+      watch: ['crawler.js', 'package.json', 'media.json'],
+    },
+    {
+      name: 'OpenTitles API',
+      script: 'api.js',
+      watch: ['api.js', 'package.json', 'media.json'],
+    },
+  ],
 };

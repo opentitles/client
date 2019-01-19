@@ -11,6 +11,7 @@
 .opentitles__verstoppertje {
   right: 0 !important;
   opacity: 1 !important;
+  pointer-events: all !important;
 }
 
 /* Some normalization */
@@ -47,6 +48,7 @@
   top: 200px;
   font-weight: normal;
   transition: all 666ms ease-out;
+  pointer-events: none;
 }
 
 .opentitles__container > .opentitles__titlemeta {
@@ -95,6 +97,7 @@ li.opentitles__titleitem > span.opentitles__titledate {
 
 .opentitles__histicon {
   font-family: 'HistIcon';
+  z-index: 1000;
   speak: none;
   font-style: normal;
   font-weight: normal;

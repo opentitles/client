@@ -2,9 +2,15 @@
   'use strict';
 
   const endpoint = 'https://floris.amsterdam';
+  const maxTitleRetries = 3;
 
   const extapi = getBrowserAPI();
-  makeGetRequest(extapi.extension.getURL('/media.json')).then((result) => {
+
+  makeGetRequest(extapi.extension.getURL('/media.json')).then(async (result) => {
+    if (!result) {
+      throw new Error('Media.json could not be loaded. This is most likely because it\'s not present in the extension directory, or because it\'s not defined as a web accessible resource in manifest.json.');
+    }
+
     if (typeof(result) !== 'object') {
       result = JSON.parse(result);
     }
@@ -27,28 +33,11 @@
 
     // No entry for medium, exit.
     if (!medium) {
+      console.log('No entry for medium, exiting');
       return;
     }
 
-    // No title element present - should definitely not happen in prod but it's here anyway for "graceful" degradation.
-    if (!document.querySelector(medium.TITLE_QUERY)) {
-      console.warn(
-          'OpenTitles script was executed, but the current page doesn\'t contain a title element.'
-      );
-      return;
-    }
-
-    makeGetRequest(endpoint + `/opentitles/article/${medium.NAME}/${window.location.href.match(medium.ID_MASK)[0]}`).then((titlehist) => {
-      if (typeof(titlehist) !== 'object') {
-        titlehist = JSON.parse(titlehist);
-      }
-
-      if (!titlehist) {
-        return;
-      }
-
-      buildModal(titlehist, medium);
-    });
+    doWhenMediumIsFound(medium);
   });
 
   /**
@@ -97,12 +86,97 @@
   }
 
   /**
+   * Retrieve the ID for this article/page so it can be used to query the API for the title history.
+   * @param {Object} medium The medium corresponding to this domain, as defined in media.json.
+   * @return {Promise} A promise that will resolve with the ID for this article/page, or null if none is found.
+   */
+  function getIdForMedium(medium) {
+    return new Promise(async (resolve, reject) => {
+      switch (medium.PAGE_ID_LOCATION) {
+        case 'var':
+          // Extensions are sandboxed as far global variables like window are concerned - the DOM is shared however.
+          // For that reason we'll use this real stupid workaround to retrieve window[first_var], since we cant JSON.stringify window.
+          const scriptTag = document.createElement('script');
+          const tagID = 'ot_window_extractor_' + randomstring();
+          scriptTag.id = tagID;
+          scriptTag.type = 'text/javascript';
+          scriptTag.text = `document.getElementById('${tagID}').innerText = JSON.stringify(window['${medium.PAGE_ID_QUERY}']);`;
+          document.body.appendChild(scriptTag);
+
+          let result = null;
+
+          try {
+            result = JSON.parse(document.querySelector(`#${tagID}`).innerText);
+          } catch (e) {
+            console.warn(`Global variable ${medium.PAGE_ID_LOCATION} was undefined at runtime.`);
+          } finally {
+            resolve(result);
+            return result;
+            break;
+          };
+        case 'page':
+          // Not yet implemented
+          resolve(null);
+          break;
+        case 'url':
+          resolve(window.location.href.match(medium.ID_MASK)[0]);
+          break;
+        default:
+          resolve(window.location.href.match(medium.ID_MASK)[0]);
+          break;
+      }
+    });
+  }
+
+  /**
+   * Method to execute when a medium entry exists for the current website.
+   * @param {Object} medium The medium corresponding to this domain, as defined in media.json.
+   * @param {Number} [retrycount=1] The amount of retries we are currently on, starts at 1.
+   */
+  async function doWhenMediumIsFound(medium, retrycount = 1) {
+    // No title element present - should definitely not happen in prod but it's here anyway for "graceful" degradation.
+    if (!document.querySelector(medium.TITLE_QUERY)) {
+      if (retrycount <= maxTitleRetries) {
+        console.log(
+            `OpenTitles script was executed, but the current page doesn't contain a title element (yet), retrying in one second... ${retrycount}/${maxTitleRetries}`
+        );
+
+        retrycount++;
+
+        setTimeout(() => {
+          doWhenMediumIsFound(medium, retrycount);
+        }, 1000);
+      } else {
+        console.warn(
+            `OpenTitles script was executed, but the current page doesn't contain a title element.`
+        );
+      }
+      return;
+    }
+
+    const id = await getIdForMedium(medium);
+
+    makeGetRequest(endpoint + `/opentitles/article/${encodeURIComponent(medium.NAME)}/${encodeURIComponent(id)}`).then((titlehist) => {
+      if (typeof(titlehist) !== 'object') {
+        titlehist = JSON.parse(titlehist);
+      }
+
+      if (!titlehist) {
+        return;
+      }
+
+      buildModal(titlehist, medium);
+    });
+  }
+
+  /**
    * Build the modal and button and inject these into the DOM.
    * @param {Object} data The response object from the OpenTitles API.
    * @param {Object} medium The medium corresponding to this domain, as defined in media.json.
    */
   function buildModal(data, medium) {
-    document.body.classList.add(medium.NAME.replace(/\./gi, ''));
+    // Remove periods and spaces from the medium name, these are not allowed in classes.
+    document.body.classList.add(medium.NAME.replace(/\.| /gi, ''));
 
     // Append 'clock' symbol to title
     const titleElement = document.querySelector(medium.TITLE_QUERY);
@@ -121,26 +195,31 @@
     card.appendChild(meta);
     card.appendChild(list);
     document.body.appendChild(card);
-    titleElement.appendChild(append);
 
-    // Article meta
-    document.querySelector('.opentitles__titlemeta').innerHTML = `<span><i class="opentitles__histicon" aria-hidden="true"></i> OpenTitles</span><div class="opentitles__closemodal">×</div>`;
-    document.querySelector('.opentitles__button').onclick = toggleModal;
-    document.querySelector('.opentitles__closemodal').onclick = toggleModal;
+    // Timeout added here for websites that reflow the title/entire page after load (NYT, e.g.).
+    // This would cause the OpenTitles container to be moved to the body in some cases.
+    setTimeout(() => {
+      titleElement.appendChild(append);
 
-    data.titles.forEach((title) => {
-      const item = document.createElement('li');
-      item.classList.add('opentitles__titleitem');
-      const date = document.createElement('span');
-      date.classList.add('opentitles__titledate');
-      date.innerText = `${title.datetime}: `;
-      const content = document.createElement('span');
-      content.innerText = title.title;
-      item.appendChild(date);
-      item.appendChild(content);
+      // Article meta
+      document.querySelector('.opentitles__titlemeta').innerHTML = `<span><i class="opentitles__histicon" aria-hidden="true"></i> OpenTitles</span><div class="opentitles__closemodal">×</div>`;
+      document.querySelector('.opentitles__button').onclick = toggleModal;
+      document.querySelector('.opentitles__closemodal').onclick = toggleModal;
 
-      document.querySelector('.opentitles__titlelist').appendChild(item);
-    });
+      data.titles.forEach((title) => {
+        const item = document.createElement('li');
+        item.classList.add('opentitles__titleitem');
+        const date = document.createElement('span');
+        date.classList.add('opentitles__titledate');
+        date.innerText = `${title.datetime}: `;
+        const content = document.createElement('span');
+        content.innerText = title.title;
+        item.appendChild(date);
+        item.appendChild(content);
+
+        document.querySelector('.opentitles__titlelist').appendChild(item);
+      });
+    }, 2000);
   }
 
   /**
@@ -161,5 +240,13 @@
     } catch (evt) {
       return new XMLHttpRequest();
     }
+  }
+
+  /**
+   * Generate a 16-char random string that conforms to /[0-9A-Z]{16}/
+   * @return {String} A string consisting of 16 random alphanumeric uppercase characters.
+   */
+  function randomstring() {
+    return (Math.random().toString(36).substring(5) + Math.random().toString(36).substring(5)).toUpperCase();
   }
 })();

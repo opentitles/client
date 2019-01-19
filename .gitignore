@@ -63,3 +63,7 @@ typings/
 *.zip
 
 promo/
+
+server/media\.json
+
+client/media\.json

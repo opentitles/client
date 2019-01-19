@@ -3,8 +3,8 @@
 
   "name": "OpenTitles",
   "short_name": "OpenTitles",
-  "description": "Show the changes to titles for several news outlets.",
-  "version": "1.3",
+  "description": "Show the changes to titles for over 40 news outlets.",
+  "version": "1.4",
   
   "icons": {
   	"16": "icons/logo16.png",
@@ -46,7 +46,22 @@
       "https://*.rd.nl/*",
       "https://*.bnr.nl/*",
       "https://*.elsevierweekblad.nl/*",
-      "https://*.abcnews.go.com/*"
+      "https://*.abcnews.go.com/*",
+      "https://*.cbsnews.com/*",
+      "https://*.cnn.com/*",
+      "https://*.msnbc.com/*",
+      "https://*.nytimes.com/*",
+      "https://*.latimes.com/*",
+      "https://*.usatoday.com/*",
+      "https://*.wsj.com/*",
+      "https://*.washingtonpost.com/*",
+      "https://*.vice.com/*",
+      "https://*.huffingtonpost.com/*",
+      "https://*.tmz.com/*",
+      "https://*.newsweek.com/*",
+      "http://*.time.com/*",
+      "https://*.theguardian.com/*",
+      "https://*.reuters.com/*"
     ],
     "js": ["ot_script.js"],
     "css": ["ot_style.css"],
