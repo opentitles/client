@@ -623,10 +623,82 @@
         "PAGE_ID_QUERY": "",
         "MATCH_DOMAINS": ["news.vice.com"],
         "TITLE_QUERY": "h2.headline > span"
+      },
+      {
+        "NAME": "Huffpost",
+        "PREFIX": "https://www.huffingtonpost.com/section/",
+        "SUFFIX": "/feed",
+        "FEEDS": [
+          "front-page"
+        ],
+        "ID_CONTAINER": "guid",
+        "ID_MASK": "([a-z]{2})_([0-9a-z]{24})",
+        "PAGE_ID_LOCATION": "url",
+        "PAGE_ID_QUERY": "",
+        "MATCH_DOMAINS": ["huffingtonpost.com"],
+        "TITLE_QUERY": "h1.headline__title"
+      },
+      {
+        "NAME": "TMZ",
+        "PREFIX": "https://www.tmz.com/rss.xml",
+        "SUFFIX": ".xml",
+        "FEEDS": [
+          "rss"
+        ],
+        "ID_CONTAINER": "guid",
+        "ID_MASK": "\/([^/]*)\/[^/]*$",
+        "PAGE_ID_LOCATION": "url",
+        "PAGE_ID_QUERY": "",
+        "MATCH_DOMAINS": ["huffingtonpost.com"],
+        "TITLE_QUERY": "h1.headline__title"
+      },
+      {
+        "NAME": "Newsweek",
+        "PREFIX": "https://www.newsweek.com/",
+        "SUFFIX": "",
+        "FEEDS": [
+          "rss"
+        ],
+        "ID_CONTAINER": "guid",
+        "ID_MASK": "([0-9]{7})",
+        "PAGE_ID_LOCATION": "url",
+        "PAGE_ID_QUERY": "",
+        "MATCH_DOMAINS": ["newsweek.com"],
+        "TITLE_QUERY": "h1[itemprop=\"headline\"]"
+      },
+      {
+        "NAME": "Time",
+        "PREFIX": "http://www.time.com/",
+        "SUFFIX": "",
+        "FEEDS": [
+          "feed"
+        ],
+        "ID_CONTAINER": "guid",
+        "ID_MASK": "([0-9]{7})",
+        "PAGE_ID_LOCATION": "url",
+        "PAGE_ID_QUERY": "",
+        "MATCH_DOMAINS": ["time.com"],
+        "TITLE_QUERY": "h1.headline"
       }
     ],
     "UK": [
-      
+      {
+        "NAME": "The Guardian",
+        "PREFIX": "http://www.theguardian.com/",
+        "SUFFIX": "/rss",
+        "FEEDS": [
+          "international",
+          "us",
+          "uk",
+          "au"
+        ],
+        "ID_CONTAINER": "guid",
+        "ID_MASK": "[^/]*$",
+        "PAGE_ID_LOCATION": "url",
+        "PAGE_ID_QUERY": "",
+        "MATCH_DOMAINS": ["theguardian.com"],
+        "TITLE_QUERY": "h1.headline"
+      }
     ]
   }
 }

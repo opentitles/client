@@ -2,6 +2,7 @@
   'use strict';
 
   const endpoint = 'https://floris.amsterdam';
+  const maxTitleRetries = 3;
 
   const extapi = getBrowserAPI();
 
@@ -36,29 +37,7 @@
       return;
     }
 
-    // No title element present - should definitely not happen in prod but it's here anyway for "graceful" degradation.
-    if (!document.querySelector(medium.TITLE_QUERY)) {
-      console.warn(
-          'OpenTitles script was executed, but the current page doesn\'t contain a title element.'
-      );
-      return;
-    }
-
-    setTimeout(async () => {
-      const id = await getIdForMedium(medium);
-
-      makeGetRequest(endpoint + `/opentitles/article/${encodeURIComponent(medium.NAME)}/${encodeURIComponent(id)}`).then((titlehist) => {
-        if (typeof(titlehist) !== 'object') {
-          titlehist = JSON.parse(titlehist);
-        }
-  
-        if (!titlehist) {
-          return;
-        }
-  
-        buildModal(titlehist, medium);
-      });
-    }, 500)
+    doWhenMediumIsFound(medium);
   });
 
   /**
@@ -146,6 +125,41 @@
           resolve(window.location.href.match(medium.ID_MASK)[0]);
           break;
       }
+    });
+  }
+
+  /**
+   * Method to execute when a medium entry exists for the current website.
+   * @param {Object} medium The medium corresponding to this domain, as defined in media.json.
+   * @param {Number} [retrycount=1] The amount of retries we are currently on, starts at 1.
+   */
+  async function doWhenMediumIsFound(medium, retrycount = 1) {
+    // No title element present - should definitely not happen in prod but it's here anyway for "graceful" degradation.
+    if (!document.querySelector(medium.TITLE_QUERY)) {
+      console.warn(
+          `OpenTitles script was executed, but the current page doesn't contain a title element.${retrycount <= maxTitleRetries ? ' Retrying... (' + retrycount + '/' + maxTitleRetries + ')' : ''}`
+      );
+
+      if (retrycount <= maxTitleRetries) {
+        setTimeout(() => {
+          doWhenMediumIsFound(medium, retrycount++);
+        }, 1000);
+      }
+      return;
+    }
+
+    const id = await getIdForMedium(medium);
+
+    makeGetRequest(endpoint + `/opentitles/article/${encodeURIComponent(medium.NAME)}/${encodeURIComponent(id)}`).then((titlehist) => {
+      if (typeof(titlehist) !== 'object') {
+        titlehist = JSON.parse(titlehist);
+      }
+
+      if (!titlehist) {
+        return;
+      }
+
+      buildModal(titlehist, medium);
     });
   }
 

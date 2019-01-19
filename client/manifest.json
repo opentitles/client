@@ -55,7 +55,9 @@
       "https://*.usatoday.com/*",
       "https://*.wsj.com/*",
       "https://*.washingtonpost.com/*",
-      "https://*.vice.com/*"
+      "https://*.vice.com/*",
+      "https://*.huffingtonpost.com/*",
+      "https://*.tmz.com/*"
     ],
     "js": ["ot_script.js"],
     "css": ["ot_style.css"],
