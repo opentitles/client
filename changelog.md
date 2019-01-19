@@ -8,18 +8,22 @@ This update also includes definitions for some of the largest US media
 - Additional logging and checks.
 - ID extraction method and switch on client script.
 - Added media:
-  - "https://*.abcnews.go.com/*"
-  - "https://*.cbsnews.com/*"
-  - "https://*.cnn.com/*"
-  - "https://*.msnbc.com/*"
-  - "https://*.nytimes.com/*"
-  - "https://*.latimes.com/*"
-  - "https://*.usatoday.com/*"
-  - "https://*.wsj.com/*"
-  - "https://*.washingtonpost.com/*"
-  - "https://*.vice.com/*"
-  - "https://*.huffingtonpost.com/*"
-  - "https://*.tmz.com/*"
+  - https://*.abcnews.go.com/*
+  - https://*.cbsnews.com/*
+  - https://*.cnn.com/*
+  - https://*.msnbc.com/*
+  - https://*.nytimes.com/*
+  - https://*.latimes.com/*
+  - https://*.usatoday.com/*
+  - https://*.wsj.com/*
+  - https://*.washingtonpost.com/*
+  - https://*.vice.com/*
+  - https://*.huffingtonpost.com/*
+  - https://*.tmz.com/*
+  - https://*.newsweek.com/*
+  - http://*.time.com/*
+  - https://*.theguardian.com/*
+  - https://*.reuters.com/*
 
 ### 1.3
 Make the popup look a bit more polished.
