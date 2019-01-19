@@ -57,7 +57,11 @@
       "https://*.washingtonpost.com/*",
       "https://*.vice.com/*",
       "https://*.huffingtonpost.com/*",
-      "https://*.tmz.com/*"
+      "https://*.tmz.com/*",
+      "https://*.newsweek.com/*",
+      "http://*.time.com/*",
+      "https://*.theguardian.com/*",
+      "https://*.reuters.com/*"
     ],
     "js": ["ot_script.js"],
     "css": ["ot_style.css"],

@@ -366,7 +366,7 @@
     "US": [
       {
         "NAME": "ABC News",
-        "PREFIX": "https://www.abcnews.go.com/abcnews/",
+        "PREFIX": "http://www.abcnews.go.com/abcnews/",
         "SUFFIX": "",
         "FEEDS": [
           "topstories",
@@ -640,7 +640,7 @@
       },
       {
         "NAME": "TMZ",
-        "PREFIX": "https://www.tmz.com/rss.xml",
+        "PREFIX": "https://www.tmz.com/",
         "SUFFIX": ".xml",
         "FEEDS": [
           "rss"
@@ -697,9 +697,38 @@
         "PAGE_ID_LOCATION": "url",
         "PAGE_ID_QUERY": "",
         "MATCH_DOMAINS": ["theguardian.com"],
-        "TITLE_QUERY": "h1.headline"
+        "TITLE_QUERY": "h1[itemprop=\"headline\"]"
+      },
+      {
+        "NAME": "Reuters",
+        "PREFIX": "http://feeds.reuters.com/",
+        "SUFFIX": "",
+        "FEEDS": [
+          "news/artsculture",
+          "reuters/businessNews",
+          "reuters/companyNews",
+          "reuters/entertainment",
+          "reuters/environment",
+          "reuters/healthNews",
+          "reuters/lifestyle",
+          "news/wealth",
+          "reuters/oddlyEnoughNews",
+          "reuters/peopleNews",
+          "Reuters/PoliticsNews",
+          "reuters/scienceNews",
+          "reuters/sportsNews",
+          "reuters/technologyNews",
+          "reuters/topNews",
+          "Reuters/domesticNews",
+          "Reuters/worldNews"
+        ],
+        "ID_CONTAINER": "guid",
+        "ID_MASK": "id([A-Z0-9]{11})",
+        "PAGE_ID_LOCATION": "url",
+        "PAGE_ID_QUERY": "",
+        "MATCH_DOMAINS": ["reuters.com"],
+        "TITLE_QUERY": "h1.ArticleHeader_headline"
       }
     ]
   }
 }
-

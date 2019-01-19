@@ -8,7 +8,7 @@
 
   makeGetRequest(extapi.extension.getURL('/media.json')).then(async (result) => {
     if (!result) {
-      throw new Error('Media.json could not be loaded. This is most likely because it\'s not present in the extension directory, or because it\'s not defined in manifest.json.');
+      throw new Error('Media.json could not be loaded. This is most likely because it\'s not present in the extension directory, or because it\'s not defined as a web accessible resource in manifest.json.');
     }
 
     if (typeof(result) !== 'object') {
@@ -195,26 +195,31 @@
     card.appendChild(meta);
     card.appendChild(list);
     document.body.appendChild(card);
-    titleElement.appendChild(append);
 
-    // Article meta
-    document.querySelector('.opentitles__titlemeta').innerHTML = `<span><i class="opentitles__histicon" aria-hidden="true"></i> OpenTitles</span><div class="opentitles__closemodal">×</div>`;
-    document.querySelector('.opentitles__button').onclick = toggleModal;
-    document.querySelector('.opentitles__closemodal').onclick = toggleModal;
+    // Timeout added here for websites that reflow the title/entire page after load (NYT, e.g.).
+    // This would cause the OpenTitles container to be moved to the body in some cases.
+    setTimeout(() => {
+      titleElement.appendChild(append);
 
-    data.titles.forEach((title) => {
-      const item = document.createElement('li');
-      item.classList.add('opentitles__titleitem');
-      const date = document.createElement('span');
-      date.classList.add('opentitles__titledate');
-      date.innerText = `${title.datetime}: `;
-      const content = document.createElement('span');
-      content.innerText = title.title;
-      item.appendChild(date);
-      item.appendChild(content);
+      // Article meta
+      document.querySelector('.opentitles__titlemeta').innerHTML = `<span><i class="opentitles__histicon" aria-hidden="true"></i> OpenTitles</span><div class="opentitles__closemodal">×</div>`;
+      document.querySelector('.opentitles__button').onclick = toggleModal;
+      document.querySelector('.opentitles__closemodal').onclick = toggleModal;
 
-      document.querySelector('.opentitles__titlelist').appendChild(item);
-    });
+      data.titles.forEach((title) => {
+        const item = document.createElement('li');
+        item.classList.add('opentitles__titleitem');
+        const date = document.createElement('span');
+        date.classList.add('opentitles__titledate');
+        date.innerText = `${title.datetime}: `;
+        const content = document.createElement('span');
+        content.innerText = title.title;
+        item.appendChild(date);
+        item.appendChild(content);
+
+        document.querySelector('.opentitles__titlelist').appendChild(item);
+      });
+    }, 2000);
   }
 
   /**
