@@ -136,14 +136,20 @@
   async function doWhenMediumIsFound(medium, retrycount = 1) {
     // No title element present - should definitely not happen in prod but it's here anyway for "graceful" degradation.
     if (!document.querySelector(medium.TITLE_QUERY)) {
-      console.warn(
-          `OpenTitles script was executed, but the current page doesn't contain a title element.${retrycount <= maxTitleRetries ? ' Retrying... (' + retrycount + '/' + maxTitleRetries + ')' : ''}`
-      );
-
       if (retrycount <= maxTitleRetries) {
+        console.log(
+            `OpenTitles script was executed, but the current page doesn't contain a title element (yet), retrying in one second... ${retrycount}/${maxTitleRetries}`
+        );
+
+        retrycount++;
+
         setTimeout(() => {
-          doWhenMediumIsFound(medium, retrycount++);
+          doWhenMediumIsFound(medium, retrycount);
         }, 1000);
+      } else {
+        console.warn(
+            `OpenTitles script was executed, but the current page doesn't contain a title element.`
+        );
       }
       return;
     }

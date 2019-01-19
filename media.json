@@ -121,7 +121,7 @@
         "PAGE_ID_LOCATION": "url",
         "PAGE_ID_QUERY": "",
         "MATCH_DOMAINS": ["telegraaf.nl"],
-        "TITLE_QUERY": "h1.article-title"
+        "TITLE_QUERY": "h1.ArticleTitle__title"
       },
       {
         "NAME": "NU.nl",
@@ -437,8 +437,8 @@
         "ID_MASK": "\/([^/]*)\/[^/]*$",
         "PAGE_ID_LOCATION": "url",
         "PAGE_ID_QUERY": "",
-        "MATCH_DOMAINS": ["cnn.com"],
-        "TITLE_QUERY": ".1-container > h1.pg-headline"
+        "MATCH_DOMAINS": ["cnn.com", "edition.cnn.com"],
+        "TITLE_QUERY": ".l-container > h1.pg-headline"
       },
       {
         "NAME": "MSNBC",
