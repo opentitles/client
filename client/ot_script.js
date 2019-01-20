@@ -3,6 +3,7 @@
 
   const endpoint = 'https://floris.amsterdam';
   const maxTitleRetries = 3;
+  const maxIdRetries = 3;
 
   const extapi = getBrowserAPI();
 
@@ -88,30 +89,51 @@
   /**
    * Retrieve the ID for this article/page so it can be used to query the API for the title history.
    * @param {Object} medium The medium corresponding to this domain, as defined in media.json.
+   * @param {Number} [retrycount=1] The amount of retries we are currently on, starts at 1.
    * @return {Promise} A promise that will resolve with the ID for this article/page, or null if none is found.
    */
-  function getIdForMedium(medium) {
+  function getIdForMedium(medium, retrycount = 1) {
     return new Promise(async (resolve, reject) => {
       switch (medium.PAGE_ID_LOCATION) {
         case 'var':
+          const locations = medium.PAGE_ID_QUERY.split('.');
+
           // Extensions are sandboxed as far global variables like window are concerned - the DOM is shared however.
           // For that reason we'll use this real stupid workaround to retrieve window[first_var], since we cant JSON.stringify window.
           const scriptTag = document.createElement('script');
           const tagID = 'ot_window_extractor_' + randomstring();
           scriptTag.id = tagID;
           scriptTag.type = 'text/javascript';
-          scriptTag.text = `document.getElementById('${tagID}').innerText = JSON.stringify(window['${medium.PAGE_ID_QUERY}']);`;
+          scriptTag.text = `document.getElementById('${tagID}').innerText = JSON.stringify(window['${locations[0]}']);`;
           document.body.appendChild(scriptTag);
 
           let result = null;
 
           try {
             result = JSON.parse(document.querySelector(`#${tagID}`).innerText);
-          } catch (e) {
-            console.warn(`Global variable ${medium.PAGE_ID_LOCATION} was undefined at runtime.`);
-          } finally {
+
+            if (locations.length > 1) {
+              for (let index = 1; index < locations.length; index++) {
+                result = result[locations[index]];
+              }
+            }
+
+            document.querySelector(`#${tagID}`).remove();
             resolve(result);
             return result;
+          } catch (e) {
+            if (retrycount <= maxIdRetries) {
+              console.log(`Global variable '${medium.PAGE_ID_QUERY}' is currently undefined, retrying in one second... ${retrycount}/${maxIdRetries}`);
+              document.querySelector(`#${tagID}`).remove();
+              setTimeout(() => {
+                retrycount++;
+                resolve(getIdForMedium(medium, retrycount));
+              }, 1000);
+            } else {
+              console.warn(`Global variable '${medium.PAGE_ID_QUERY}' was undefined at runtime`);
+              document.querySelector(`#${tagID}`).remove();
+            }
+          } finally {
             break;
           };
         case 'page':

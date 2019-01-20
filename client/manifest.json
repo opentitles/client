@@ -53,7 +53,7 @@
       "https://*.nytimes.com/*",
       "https://*.latimes.com/*",
       "https://*.usatoday.com/*",
-      "https://*.wsj.com/*",
+      "https://*.wsj.com/articles/*",
       "https://*.washingtonpost.com/*",
       "https://*.vice.com/*",
       "https://*.huffingtonpost.com/*",
