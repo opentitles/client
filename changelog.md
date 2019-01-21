@@ -1,3 +1,6 @@
+#### 1.5
+- Fixed window variable ID extraction for more than one property of window and added retries.
+
 ### 1.4
 Add two new ways to extract the article ID from a page: var and page. 
 Previously the ID had to be included in the URL for the plugin to be able to match an article to our records, now it can also be extracted from a global/window JS variable or an element on the page.
