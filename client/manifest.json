@@ -4,7 +4,7 @@
   "name": "OpenTitles",
   "short_name": "OpenTitles",
   "description": "Show the changes to titles for over 40 news outlets.",
-  "version": "1.5",
+  "version": "1.6",
   
   "icons": {
   	"16": "icons/logo16.png",

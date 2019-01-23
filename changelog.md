@@ -1,4 +1,7 @@
-#### 1.5
+### 1.6
+Small definitions fix
+
+### 1.5
 - Fixed window variable ID extraction for more than one property of window and added retries.
 
 ### 1.4

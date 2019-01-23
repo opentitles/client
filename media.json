@@ -214,7 +214,7 @@
         "PAGE_ID_LOCATION": "url",
         "PAGE_ID_QUERY": "",
         "MATCH_DOMAINS": ["rtlnieuws.nl", "bright.nl"],
-        "title_query": "div.article-title-width > h1.node-title"
+        "TITLE_QUERY": "div.article-title-width > h1.node-title"
       },
       {
         "NAME": "Trouw",
