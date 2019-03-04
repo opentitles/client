@@ -1,5 +1,5 @@
 {
-  "SCRAPER_INTERVAL": 600,
+  "SCRAPER_INTERVAL": 1200,
   "FEEDS": {
     "NL": [
       {

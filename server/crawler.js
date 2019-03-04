@@ -11,9 +11,18 @@
     },
   });
   const moment = require('moment');
+  const request = require('request');
   const fs = require('fs');
   const MongoClient = require('mongodb').MongoClient;
   const url = 'mongodb://localhost:27017/opentitles';
+
+  const listeners = [
+    {
+      name: 'NOSEdits',
+      interestedOrgs: ['NOS'],
+      webhookuri: 'http://127.0.0.1:7676/notify',
+    },
+  ];
 
   if (!fs.existsSync('media.json')) {
     throw new Error('Media.json could not be found in the server directory.');
@@ -71,6 +80,7 @@
               }
 
               item.org = org.NAME;
+              item.feedtitle = feed.title;
               item.sourcefeed = feedname;
               item.lang = countrykey;
               return item;
@@ -129,9 +139,11 @@
         const newEntry = {
           org: article.org,
           articleID: article.artid,
+          feedtitle: article.feedtitle,
           sourcefeed: article.sourcefeed,
           lang: article.lang,
           link: article.link,
+          guid: article.guid,
           titles: [{title: article.title, datetime: moment(article.pubDate).format('MMMM Do YYYY, h:mm:ss a')}],
           first_seen: moment().format('MMMM Do YYYY, h:mm:ss a'),
           pub_date: moment(article.pubDate).format('MMMM Do YYYY, h:mm:ss a'),
@@ -148,6 +160,7 @@
         res.titles.push({title: article.title, datetime: moment().format('MMMM Do YYYY, h:mm:ss a')});
         dbo.collection('articles').replaceOne(find, res);
         console.log(`[${article.org}:${article.artid}] New title added for article`);
+        notifyListeners(article);
         return;
       }
 
@@ -207,5 +220,25 @@
       return [null, data];
     })
         .catch((err) => [err]);
+  }
+
+  /**
+   * Notify all defined listeners that the title for an article has changed.
+   * @param {Object} article The article object.
+   */
+  function notifyListeners(article) {
+    listeners.forEach((listener) => {
+      if (listener.interestedOrgs.includes(article.org)) {
+        request.post({
+          uri: listener.webhookuri,
+          json: true,
+          body: article,
+        }, function(err, httpResponse, body) {
+          if (err) {
+            console.log(`Could not reach ${listener.name} when issuing webhook.`);
+          }
+        });
+      }
+    });
   }
 })();
