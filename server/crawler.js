@@ -1,18 +1,23 @@
 (() => {
   'use strict';
 
+  const parsertimeout = 5;
+  const parsermaxredirects = 5;
+  const mongotimeout = 5;
+
+  const os = require('os');
+  const fs = require('fs');
   const Parser = require('rss-parser');
   const parser = new Parser({
     headers: {'User-Agent': 'OpenTitles Scraper by floris@debijl.xyz'},
-    timeout: 10 * 1000,
-    maxRedirects: 25,
+    timeout: parsertimeout * 1000,
+    maxRedirects: parsermaxredirects,
     customFields: {
       item: ['wp:arc_uuid'],
     },
   });
   const moment = require('moment');
   const request = require('request');
-  const fs = require('fs');
   const MongoClient = require('mongodb').MongoClient;
   const url = 'mongodb://localhost:27017/opentitles';
 
@@ -25,6 +30,7 @@
   ];
 
   if (!fs.existsSync('media.json')) {
+    logger('FATAL - Media.json could not be found in the server directory.');
     throw new Error('Media.json could not be found in the server directory.');
   } const CONFIG = JSON.parse(fs.readFileSync('media.json'));
 
@@ -36,7 +42,7 @@
   MongoClient.connect(url, {
     appname: 'OpenTitles API',
     useNewUrlParser: true,
-    connectTimeoutMS: 5000,
+    connectTimeoutMS: mongotimeout * 1000,
   }, function(err, database) {
     if (err) {
       throw err;
@@ -45,7 +51,9 @@
     dbo = database.db('opentitles');
   });
 
+  // Do first retrieval of articles
   setTimeout(() => {
+    logger('Starting OpenTitles Crawler...', 'Settings:', `Parser timeout: ${parsertimeout}`, `Parser max redirects: ${parsermaxredirects}`, `MongoDB Timeout: ${mongotimeout}`, `Scrape Interval: ${CONFIG.SCRAPER_INTERVAL}`);
     retrieveArticles();
   }, 5000);
 
@@ -68,7 +76,7 @@
             const [err, feed] = await to(parser.parseURL(org.PREFIX + feedname + org.SUFFIX));
 
             if (err) {
-              console.log(`Could not retrieve ${org.PREFIX + feedname + org.SUFFIX}`);
+              logger(`Could not retrieve ${org.PREFIX + feedname + org.SUFFIX}`);
               continue;
             }
 
@@ -144,12 +152,12 @@
           lang: article.lang,
           link: article.link,
           guid: article.guid,
-          titles: [{title: article.title, datetime: moment(article.pubDate).format('MMMM Do YYYY, h:mm:ss a')}],
+          titles: [{title: article.title, datetime: moment(article.pubDate).format('MMMM Do YYYY, h:mm:ss a'), timestamp: moment.now()}],
           first_seen: moment().format('MMMM Do YYYY, h:mm:ss a'),
           pub_date: moment(article.pubDate).format('MMMM Do YYYY, h:mm:ss a'),
         };
 
-        console.log(`[${article.org}:${article.artid}] Added new article to collection`);
+        // console.log(`[${article.org}:${article.artid}] Added new article to collection`);
 
         dbo.collection('articles').insertOne(newEntry);
         return;
@@ -157,10 +165,10 @@
 
       if (res && res.titles[res.titles.length - 1].title !== article.title) {
         // Article was already seen but we have a new title, add the latest title
-        res.titles.push({title: article.title, datetime: moment().format('MMMM Do YYYY, h:mm:ss a')});
+        res.titles.push({title: article.title, datetime: moment().format('MMMM Do YYYY, h:mm:ss a'), timestamp: moment.now()});
         dbo.collection('articles').replaceOne(find, res);
-        console.log(`[${article.org}:${article.artid}] New title added for article`);
-        notifyListeners(article);
+        // console.log(`[${article.org}:${article.artid}] New title added for article`);
+        notifyListeners(res);
         return;
       }
 
@@ -178,7 +186,7 @@
   function findArticle(find, callback) {
     dbo.collection('articles').findOne(find, function(err, res) {
       if (err) {
-        console.log(err);
+        logger(err);
         if (typeof(callback) == 'function') {
           callback([null]);
         }
@@ -235,10 +243,38 @@
           body: article,
         }, function(err, httpResponse, body) {
           if (err) {
-            console.log(`Could not reach ${listener.name} when issuing webhook.`);
+            logger(`Could not reach ${listener.name} when issuing webhook.`);
           }
         });
       }
+    });
+  }
+
+  /**
+   * Write N number of lines to the logfiles preceded by a timestamp.
+   * @param  {...string} params The lines to write to the logfile
+   */
+  function logger(...params) {
+    const dir = '/var/log/opentitles';
+    const file = `${dir}/crawler.log`;
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir);
+    }
+
+    let output = `[${moment().format('DD/MM/Y - HH:mm:ss')}] `;
+    const leftpadlength = [...output].length;
+
+    for (let i = 0; i < params.length; i++) {
+      if (i > 0) {
+        output += ' '.repeat(leftpadlength);
+      }
+
+      output += `${params[i]}${os.EOL}`;
+    }
+
+    fs.appendFile(file, output, (err) => {
+      if (!err) return;
+      console.error('Could not write to logfile! - ' + err);
     });
   }
 })();

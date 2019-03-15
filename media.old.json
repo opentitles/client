@@ -365,6 +365,27 @@
     ],
     "US": [
       {
+        "NAME": "ABC News",
+        "PREFIX": "http://www.abcnews.go.com/abcnews/",
+        "SUFFIX": "",
+        "FEEDS": [
+          "topstories",
+          "internationalheadlines",
+          "usheadlines",
+          "politicsheadlines",
+          "moneyheadlines",
+          "technologyheadlines",
+          "healthheadlines",
+          "entertainmentheadlines"
+        ],
+        "ID_CONTAINER": "guid",
+        "ID_MASK": "([0-9]){8}",
+        "PAGE_ID_LOCATION": "url",
+        "PAGE_ID_QUERY": "",
+        "MATCH_DOMAINS": ["abcnews.go.com"],
+        "TITLE_QUERY": "header.article-header > h1"
+      },
+      {
         "NAME": "CBS News",
         "PREFIX": "https://www.cbsnews.com/latest/rss/",
         "SUFFIX": "",
@@ -522,6 +543,27 @@
         "PAGE_ID_QUERY": "INITIAL_PROPS_HEADER.context.articleId",
         "MATCH_DOMAINS": ["wsj.com"],
         "TITLE_QUERY": "h1.wsj-article-headline"
+      },
+      {
+        "NAME": "The Washington Post",
+        "PREFIX": "http://feeds.washingtonpost.com/rss/",
+        "SUFFIX": "",
+        "FEEDS": [
+          "opinions",
+          "local",
+          "sports",
+          "national",
+          "world",
+          "business",
+          "entertainment",
+          "politics"
+        ],
+        "ID_CONTAINER": "wp:arc_uuid",
+        "ID_MASK": "([0-9A-Z]{26})",
+        "PAGE_ID_LOCATION": "var",
+        "PAGE_ID_QUERY": "wp_arc_id",
+        "MATCH_DOMAINS": ["washingtonpost.com"],
+        "TITLE_QUERY": "h1[itemprop=\"headline\"]"
       },
       {
         "NAME": "VICE",
