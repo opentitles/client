@@ -15,7 +15,10 @@
           "nosnieuwscultuurenmedia",
           "nosnieuwstech",
           "nosnieuwskoningshuis",
-          "nossportalgemeen"
+          "nossportalgemeen",
+          "nieuwsuuralgemeen",
+          "nosnieuwsvideo",
+          "nosop3"
         ],
         "ID_CONTAINER": "guid",
         "ID_MASK": "[0-9]{7}",

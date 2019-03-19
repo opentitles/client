@@ -4,7 +4,7 @@
   "name": "OpenTitles",
   "short_name": "OpenTitles",
   "description": "Show the changes to titles for over 40 news outlets.",
-  "version": "1.6",
+  "version": "1.7",
   
   "icons": {
   	"16": "icons/logo16.png",
@@ -21,7 +21,7 @@
   "content_scripts": [{
     "matches": [
       "https://*.nu.nl/*", 
-      "https://*.nos.nl/artikel/*", 
+      "https://*.nos.nl/*", 
       "https://*.jeugdjournaal.nl/*", 
       "https://*.ad.nl/*", 
       "https://*.bd.nl/*", 
