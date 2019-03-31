@@ -5,6 +5,8 @@
   const parsermaxredirects = 5;
   const mongotimeout = 5;
 
+  const log = false;
+
   const os = require('os');
   const fs = require('fs');
   const Parser = require('rss-parser');
@@ -255,6 +257,8 @@
    * @param  {...string} params The lines to write to the logfile
    */
   function logger(...params) {
+    if (!log) return;
+
     const dir = '/var/log/opentitles';
     const file = `${dir}/crawler.log`;
     if (!fs.existsSync(dir)) {
