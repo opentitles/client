@@ -7,18 +7,7 @@
         "PREFIX": "http://feeds.nos.nl/",
         "SUFFIX": "",
         "FEEDS": [
-          "nosnieuwsbinnenland",
-          "nosnieuwsalgemeen",
-          "nosnieuwsbuitenland",
-          "nosnieuwspolitiek",
-          "nosnieuwseconomie",
-          "nosnieuwscultuurenmedia",
-          "nosnieuwstech",
-          "nosnieuwskoningshuis",
-          "nossportalgemeen",
-          "nieuwsuuralgemeen",
-          "nosnieuwsvideo",
-          "nosop3"
+          "nosnieuwsalgemeen"
         ],
         "ID_CONTAINER": "guid",
         "ID_MASK": "[0-9]{7}",
