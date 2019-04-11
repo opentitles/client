@@ -14,7 +14,7 @@
         "PAGE_ID_LOCATION": "url",
         "PAGE_ID_QUERY": "",
         "MATCH_DOMAINS": ["nos.nl", "jeugdjournaal.nl"],
-        "TITLE_QUERY": ".article__title"
+        "TITLE_QUERY": "h1[class*=title]"
       },
       {
         "NAME": "AD",
