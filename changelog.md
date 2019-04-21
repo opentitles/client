@@ -1,3 +1,6 @@
+### 1.8
+NOS title selector changed
+
 ### 1.7
 Minor update to remove some broken feeds and add a few missing ones for NOS.
 
