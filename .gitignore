@@ -67,3 +67,5 @@ promo/
 server/media\.json
 
 client/media\.json
+
+edge/
