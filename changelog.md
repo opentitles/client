@@ -1,11 +1,13 @@
 ### 1.9
 OpenTitles will now lookup the title history for an article via a background script proxy, instead of directly from the content script.
-This is more secure and is not blocked by future CORB-policies, such as those already in place in Chrome 73
+This is more secure and is not blocked by future CORB-policies, such as those already in place in Chrome 73. 
+The version number will show up as 1.9.1 in browsers due to a certificate bug in Firefox disabling a previous release, forcing a .1 version increment.
 
 - Switched out XMLHttpRequest API usage for the newer, more robust fetch API.
 - Moved CORS request to background script.
 - Added floris.amsterdam (HTTPS only) as allowed host.
 - Properties in media.json are now lowercased as per best JSON-practices.
+- 
 
 ### 1.8
 NOS title selector changed
