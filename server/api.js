@@ -102,5 +102,9 @@
     });
   });
 
+  app.all('/opentitles/ping', function(req, res) {
+    res.sendStatus(200);
+  });
+
   app.listen(8083);
 })();

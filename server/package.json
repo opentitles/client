@@ -1,7 +1,7 @@
 {
   "name": "opentitles-api",
-  "version": "1.0.0",
-  "description": "Index article titles on a multitude of Dutch news websites and expose these changes via an API.",
+  "version": "1.9.0",
+  "description": "Index article titles on a multitude of news websites and expose these changes via an API.",
   "main": "server.js",
   "repository": {
     "type": "git",
@@ -13,16 +13,17 @@
   "author": "Floris de Bijl",
   "license": "AGPL-3.0",
   "dependencies": {
+    "async": "^2.6.2",
     "cors": "^2.8.5",
     "express": "^4.16.4",
-    "moment": "^2.23.0",
-    "mongodb": "^3.1.12",
+    "moment": "^2.24.0",
+    "mongodb": "^3.2.3",
     "request": "^2.88.0",
-    "rss-parser": "^3.6.2"
+    "rss-parser": "^3.7.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
-    "eslint": "^5.12.0",
+    "eslint": "^5.16.0",
     "eslint-config-google": "^0.11.0"
   }
 }

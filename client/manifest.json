@@ -4,7 +4,7 @@
   "name": "OpenTitles",
   "short_name": "OpenTitles",
   "description": "Show the changes to titles for over 40 news outlets.",
-  "version": "1.8",
+  "version": "1.9.1",
   
   "icons": {
   	"16": "icons/logo16.png",
@@ -68,7 +68,12 @@
     "run_at": "document_idle"
   }],
 
+  "background": {
+    "scripts": ["ot_background.js"]
+  },
+
   "permissions": [
+    "https://floris.amsterdam/*",
     "tabs"
   ],
 

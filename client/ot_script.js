@@ -1,29 +1,24 @@
 (() => {
   'use strict';
 
-  const endpoint = 'https://floris.amsterdam';
   const maxTitleRetries = 3;
   const maxIdRetries = 3;
 
   const extapi = getBrowserAPI();
 
-  makeGetRequest(extapi.extension.getURL('/media.json')).then(async (result) => {
+  fetch(extapi.extension.getURL('/media.json')).then((response) => response.json()).then(async (result) => {
     if (!result) {
       throw new Error('Media.json could not be loaded. This is most likely because it\'s not present in the extension directory, or because it\'s not defined as a web accessible resource in manifest.json.');
     }
 
-    if (typeof(result) !== 'object') {
-      result = JSON.parse(result);
-    }
-
     let medium;
 
-    for (const key in result.FEEDS) {
-      if (result.FEEDS.hasOwnProperty(key)) {
-        const feed = result.FEEDS[key];
+    for (const key in result.feeds) {
+      if (result.feeds.hasOwnProperty(key)) {
+        const feed = result.feeds[key];
 
         medium = feed.find((entry) => {
-          return entry.MATCH_DOMAINS.includes(window.location.hostname.replace('www.', ''));
+          return entry.match_domains.includes(window.location.hostname.replace('www.', ''));
         });
 
         if (medium) {
@@ -32,7 +27,6 @@
       }
     }
 
-    // No entry for medium, exit.
     if (!medium) {
       console.log('No entry for medium, exiting');
       return;
@@ -42,48 +36,21 @@
   });
 
   /**
-   * Make a GET request to a given URL - use with 'await'.
-   * @param {String} url The target for the XMLHttpRequest.
-   * @return {Promise} A promise that resolves with the result of the XMLHttpRequest to the given URL.
+   * Query the background script for the title history of an article.
+   * @param {string} medium The name of the medium to which the article belongs.
+   * @param {string} articleID The ID of the article to query, must belong to an article published by $medium.
    */
-  function makeGetRequest(url) {
+  async function getArticle(medium, articleID) {
     return new Promise((resolve, reject) => {
-      const xhr = getXHR();
-      xhr.open('GET', url);
-      xhr.onload = function() {
-        if (this.status >= 200 && this.status < 300) {
-          resolve(xhr.response);
-        } else {
-          reject({
-            status: this.status,
-            statusText: xhr.statusText,
-          });
-        }
-      };
-      xhr.onerror = function() {
-        reject({
-          status: this.status,
-          statusText: xhr.statusText,
-        });
-      };
-      xhr.send();
+      extapi.runtime.sendMessage({
+        type: 'getarticle',
+        medium: medium,
+        id: articleID,
+      }, (response) => {
+        console.log(response);
+        resolve(response);
+      });
     });
-  }
-
-  /**
-   * Get the browser API object regardless of browser.
-   * @return {Object} Browser extension API.
-   */
-  function getBrowserAPI() {
-    try {
-      return browser;
-    } catch (e) {
-      try {
-        return chrome;
-      } catch (e) {
-        return null;
-      }
-    }
   }
 
   /**
@@ -94,9 +61,9 @@
    */
   function getIdForMedium(medium, retrycount = 1) {
     return new Promise(async (resolve, reject) => {
-      switch (medium.PAGE_ID_LOCATION) {
+      switch (medium.page_id_location) {
         case 'var':
-          const locations = medium.PAGE_ID_QUERY.split('.');
+          const locations = medium.page_id_query.split('.');
 
           // Extensions are sandboxed as far global variables like window are concerned - the DOM is shared however.
           // For that reason we'll use this real stupid workaround to retrieve window[first_var], since we cant JSON.stringify window.
@@ -123,14 +90,14 @@
             return result;
           } catch (e) {
             if (retrycount <= maxIdRetries) {
-              console.log(`Global variable '${medium.PAGE_ID_QUERY}' is currently undefined, retrying in one second... ${retrycount}/${maxIdRetries}`);
+              console.log(`Global variable '${medium.page_id_query}' is currently undefined, retrying in one second... ${retrycount}/${maxIdRetries}`);
               document.querySelector(`#${tagID}`).remove();
               setTimeout(() => {
                 retrycount++;
                 resolve(getIdForMedium(medium, retrycount));
               }, 1000);
             } else {
-              console.warn(`Global variable '${medium.PAGE_ID_QUERY}' was undefined at runtime`);
+              console.warn(`Global variable '${medium.page_id_query}' was undefined at runtime`);
               document.querySelector(`#${tagID}`).remove();
             }
           } finally {
@@ -141,10 +108,10 @@
           resolve(null);
           break;
         case 'url':
-          resolve(window.location.href.match(medium.ID_MASK)[0]);
+          resolve(window.location.href.match(medium.id_mask)[0]);
           break;
         default:
-          resolve(window.location.href.match(medium.ID_MASK)[0]);
+          resolve(window.location.href.match(medium.id_mask)[0]);
           break;
       }
     });
@@ -157,7 +124,7 @@
    */
   async function doWhenMediumIsFound(medium, retrycount = 1) {
     // No title element present - should definitely not happen in prod but it's here anyway for "graceful" degradation.
-    if (!document.querySelector(medium.TITLE_QUERY)) {
+    if (!document.querySelector(medium.title_query)) {
       if (retrycount <= maxTitleRetries) {
         console.log(
             `OpenTitles script was executed, but the current page doesn't contain a title element (yet), retrying in one second... ${retrycount}/${maxTitleRetries}`
@@ -178,7 +145,7 @@
 
     const id = await getIdForMedium(medium);
 
-    makeGetRequest(endpoint + `/opentitles/article/${encodeURIComponent(medium.NAME)}/${encodeURIComponent(id)}`).then((titlehist) => {
+    getArticle(medium.name, id).then((titlehist) => {
       if (typeof(titlehist) !== 'object') {
         titlehist = JSON.parse(titlehist);
       }
@@ -198,10 +165,10 @@
    */
   function buildModal(data, medium) {
     // Remove periods and spaces from the medium name, these are not allowed in classes.
-    document.body.classList.add(medium.NAME.replace(/\.| /gi, ''));
+    document.body.classList.add(medium.name.replace(/\.| /gi, ''));
 
     // Append 'clock' symbol to title
-    const titleElement = document.querySelector(medium.TITLE_QUERY);
+    const titleElement = document.querySelector(medium.title_query);
     const append = document.createElement('div');
     append.title = 'Click to open the OpenTitles overlay';
     append.textContent = '';
@@ -252,23 +219,26 @@
   };
 
   /**
-   * Compatiblity shim to retrieve the wrapped XHR object - Firefox doesn't allow usage of the plain XMLHttpRequest.
-   * @return {XMLHttpRequest} The properly wrapped XHR object.
-   */
-  function getXHR() {
-    try {
-      // eslint-disable-next-line new-cap
-      return XPCNativeWrapper(new window.wrappedJSObject.XMLHttpRequest());
-    } catch (evt) {
-      return new XMLHttpRequest();
-    }
-  }
-
-  /**
    * Generate a 16-char random string that conforms to /[0-9A-Z]{16}/
    * @return {String} A string consisting of 16 random alphanumeric uppercase characters.
    */
   function randomstring() {
     return (Math.random().toString(36).substring(5) + Math.random().toString(36).substring(5)).toUpperCase();
+  }
+
+  /**
+   * Get the browser API object regardless of browser.
+   * @return {Object} Browser extension API.
+   */
+  function getBrowserAPI() {
+    try {
+      return browser;
+    } catch (e) {
+      try {
+        return chrome;
+      } catch (e) {
+        return null;
+      }
+    }
   }
 })();
