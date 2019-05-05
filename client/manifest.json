@@ -3,6 +3,7 @@
 
   "name": "OpenTitles",
   "short_name": "OpenTitles",
+  "author": "Floris de Bijl",
   "description": "Show the changes to titles for over 40 news outlets.",
   "version": "1.9.1",
   
@@ -69,7 +70,8 @@
   }],
 
   "background": {
-    "scripts": ["ot_background.js"]
+    "scripts": ["ot_background.js"],
+    "persistent": false
   },
 
   "permissions": [
