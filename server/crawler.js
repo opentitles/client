@@ -110,6 +110,7 @@
         return false;
       }
 
+      item.title = item.title.trim();
       item.org = medium.name;
       item.feedtitle = feed.title;
       item.sourcefeed = feedname;
@@ -146,14 +147,13 @@
   /**
    * Send every item to be checked by the DB.
    * @param {object} feed The orgfeed as retrieved by rss-parser - make sure artid and org are populated.
-   * @return {object} The same feed as was passed to checkAndPropagate().
    */
   function checkAndPropagate(feed) {
     feed.items.forEach((item) => {
       checkWithDB(item);
     });
 
-    return feed;
+    feed = null;
   }
 
   /**
