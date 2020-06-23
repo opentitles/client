@@ -1,4 +1,10 @@
-### 1.9
+### 2.0
+Massive (and long overdue) rewrite to Typescript.
+
+- Definitions are now retrieved from the central definition repository for OpenTitles: <https://github.com/opentitles/definition>
+
+
+### 1.9 (5/5/2019)
 OpenTitles will now lookup the title history for an article via a background script proxy, instead of directly from the content script.
 This is more secure and is not blocked by future CORB-policies, such as those already in place in Chrome 73. 
 The version number will show up as 1.9.1 in browsers due to a certificate bug in Firefox disabling a previous release, forcing a .1 version increment.
@@ -7,18 +13,17 @@ The version number will show up as 1.9.1 in browsers due to a certificate bug in
 - Moved CORS request to background script.
 - Added floris.amsterdam (HTTPS only) as allowed host.
 - Properties in media.json are now lowercased as per best JSON-practices.
-- 
 
-### 1.8
+### 1.8 (21/4/2019)
 NOS title selector changed
 
-### 1.7
+### 1.7 (19/3/2019)
 Minor update to remove some broken feeds and add a few missing ones for NOS.
 
-### 1.6
+### 1.6 (23/1/2019)
 Small definitions fix
 
-### 1.5
+### 1.5 ()
 - Fixed window variable ID extraction for more than one property of window and added retries.
 
 ### 1.4
@@ -31,22 +36,22 @@ This update also includes definitions for some of the largest US media
 - Additional logging and checks.
 - ID extraction method and switch on client script.
 - Added media:
-  - https://*.abcnews.go.com/*
-  - https://*.cbsnews.com/*
-  - https://*.cnn.com/*
-  - https://*.msnbc.com/*
-  - https://*.nytimes.com/*
-  - https://*.latimes.com/*
-  - https://*.usatoday.com/*
-  - https://*.wsj.com/*
-  - https://*.washingtonpost.com/*
-  - https://*.vice.com/*
-  - https://*.huffingtonpost.com/*
-  - https://*.tmz.com/*
-  - https://*.newsweek.com/*
-  - http://*.time.com/*
-  - https://*.theguardian.com/*
-  - https://*.reuters.com/*
+  - https://\*.abcnews.go.com/*
+  - https://\*.cbsnews.com/*
+  - https://\*.cnn.com/*
+  - https://\*.msnbc.com/*
+  - https://\*.nytimes.com/*
+  - https://\*.latimes.com/*
+  - https://\*.usatoday.com/*
+  - https://\*.wsj.com/*
+  - https://\*.washingtonpost.com/*
+  - https://\*.vice.com/*
+  - https://\*.huffingtonpost.com/*
+  - https://\*.tmz.com/*
+  - https://\*.newsweek.com/*
+  - http://\*.time.com/*
+  - https://\*.theguardian.com/*
+  - https://\*.reuters.com/*
 
 ### 1.3
 Make the popup look a bit more polished.

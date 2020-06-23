@@ -69,3 +69,7 @@ server/media\.json
 client/media\.json
 
 edge/
+
+dist/
+
+.cache/

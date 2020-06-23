@@ -64,13 +64,13 @@
       "https://*.theguardian.com/*",
       "https://*.reuters.com/*"
     ],
-    "js": ["ot_script.js"],
-    "css": ["ot_style.css"],
+    "js": ["OpenTitlesMainScript.js"],
+    "css": ["style/OpenTitles.css"],
     "run_at": "document_idle"
   }],
 
   "background": {
-    "scripts": ["ot_background.js"],
+    "scripts": ["OpenTitlesBackground.js"],
     "persistent": false
   },
 

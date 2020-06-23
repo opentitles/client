@@ -1,0 +1,25 @@
+{
+  "name": "opentitles.client",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "compile": "parcel src/*"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/chrome": "0.0.116",
+    "@types/firefox-webext-browser": "^70.0.1",
+    "@types/node": "13.13.12",
+    "@typescript-eslint/eslint-plugin": "3.3.0",
+    "@typescript-eslint/parser": "3.3.0",
+    "eslint": "7.3.0",
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-static-files-copy": "^2.4.3",
+    "typescript": "3.9.5"
+  },
+  "staticFiles": {
+    "staticPath": "src/static",
+    "watcherGlob": false
+}
+}
