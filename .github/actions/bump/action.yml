@@ -1,0 +1,37 @@
+name: 'Bump Action'
+description: 'Bump a version based on commit message, and push package.json update to repository'
+inputs:
+  user:  
+    description: 'The git user to push the package.json version update'
+    required: false
+  email:  
+    description: 'The git email to push the package.json version update'
+    required: false
+  branch:  
+    description: 'The git email to push the package.json version update'
+    default: 'master'
+    required: false
+  github_token: 
+    description: 'Github access token'
+    required: true
+  unrelated:
+    description: 'Merge unrelated histories'
+    required: false
+    default: false
+  prefix:
+    description: 'Prefix for the commit message (.e.g: "chore(deps):")'
+    required: false
+    default: 'chore(deps):'
+outputs:
+  version: # output will be available to future steps 
+    description: 'The version being pushed'
+  message:
+    description: The commit message for the latest commit
+  description:
+    description: The description for the latest commit
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+branding:
+  icon: 'package'  
+  color: 'red'

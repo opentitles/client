@@ -1,0 +1,84 @@
+name: Release
+
+on:
+  push:
+    branches:    
+      - master
+    paths-ignore:
+      - 'package.json'
+      - 'CHANGELOG.md'
+      - 'src/static/manifest.json'
+
+jobs:
+  release:
+    name: Build and Release
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout client
+        uses: actions/checkout@v2
+
+      - name: Checkout definition
+        uses: actions/checkout@v2
+        with:
+          repository: opentitles/definition
+          path: definition
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Bump version
+        uses: ./.github/actions/bump
+        id: bump_versions
+
+      - name: Compile plugin
+        run: npm run build
+
+      - name: Copy definition files
+        run: cp definition/media.json dist/
+
+      - name: Cut zip and crx release
+        run: npm run package
+
+      - name: Publish to Github
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.bump_versions.outputs.version }}
+          release_name: ${{ format('OpenTitles v{0}', steps.bump_versions.outputs.version) }}
+          body: ${{ steps.bump_versions.outputs.description }}
+
+      - name: Add Chrome binaries
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./OpenTitles.crx
+          asset_name: OpenTitles.crx
+          asset_content_type: application/x-chrome-extension
+
+      - name: Add Firefox (generic) binaries
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./OpenTitles.zip
+          asset_name: OpenTitles.zip
+          asset_content_type: application/zip
+
+      - name: Publish to Chrome Webstore
+        run: npm run publish-chrome
+        env:
+          CWS_CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+          CWS_CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+          CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+
+      #- name: Release to Firefox

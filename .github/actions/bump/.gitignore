@@ -1,3 +1,8 @@
+node_modules/
+
+# Editors
+.vscode
+
 # Logs
 logs
 *.log
@@ -32,8 +37,7 @@ bower_components
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
-# Dependency directories
-node_modules/
+# Other Dependency directories
 jspm_packages/
 
 # TypeScript v1 declaration files
@@ -59,18 +63,3 @@ typings/
 
 # next.js build output
 .next
-
-*.zip
-*.crx
-
-promo/
-
-server/media\.json
-
-client/media\.json
-
-edge/
-
-/dist
-
-.cache/

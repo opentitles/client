@@ -1,11 +1,12 @@
 {
   "name": "opentitles.client",
   "private": true,
-  "main": "index.js",
+  "version": "2.0.0",
   "scripts": {
-    "start": "node index.js",
-    "compile": "parcel build src/* --no-minify",
-    "lint": "eslint \"./src/**/*.ts\" --max-warnings 2"
+    "build": "parcel build src/* --no-minify",
+    "package": "crx3 -z OpenTitles.zip -o OpenTitles.crx dist",
+    "lint": "eslint \"./src/**/*.ts\" --max-warnings 2",
+    "publish-chrome": "webstore upload --source OpenTitles.zip --auto-publish --extension-id ipcpballelfolmocdhfjijgmbljachog --client-id $CWS_CLIENT_ID --client-secret $CWS_CLIENT_SECRET --refresh-token $CWS_REFRESH_TOKEN"
   },
   "dependencies": {},
   "devDependencies": {
@@ -14,6 +15,7 @@
     "@types/node": "13.13.12",
     "@typescript-eslint/eslint-plugin": "3.3.0",
     "@typescript-eslint/parser": "3.3.0",
+    "crx3": "^1.1.2",
     "eslint": "7.3.0",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-static-files-copy": "^2.4.3",
