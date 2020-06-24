@@ -1,5 +1,4 @@
 {
-  "scraper_interval": 600,
   "feeds": {
     "nl": [
       {
@@ -14,7 +13,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["nos.nl", "jeugdjournaal.nl"],
-        "title_query": "h1[class*=title]"
+        "title_query": ["h1[class*=title]"]
       },
       {
         "name": "AD",
@@ -101,7 +100,7 @@
           "destentor.nl",
           "gelderlander.nl"
         ],
-        "title_query": "header.article__header > .article__title"
+        "title_query": ["header.article__header > .article__title"]
       },
       {
         "name": "Telegraaf",
@@ -113,7 +112,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["telegraaf.nl"],
-        "title_query": "h1.ArticleTitle__title"
+        "title_query": ["h1.ArticleTitleBlock__title"]
       },
       {
         "name": "NU.nl",
@@ -138,7 +137,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["nu.nl"],
-        "title_query": ".headerimage > .title.fluid"
+        "title_query": [".headerimage .title.fluid"]
       },
       {
         "name": "Tweakers",
@@ -150,7 +149,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["tweakers.net"],
-        "title_query": ".headingContent > .title > h1"
+        "title_query": [".headingContent > .title > h1"]
       },
       {
         "name": "NRC",
@@ -162,7 +161,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["nrc.nl"],
-        "title_query": "div.center-block.intro-col.article__header > h1"
+        "title_query": ["div.center-block.intro-col.article__header > h1"]
       },
       {
         "name": "Volkskrant",
@@ -186,7 +185,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["volkskrant.nl"],
-        "title_query": ".artstyle__header-title"
+        "title_query": [".artstyle__header-title"]
       },
       {
         "name": "RTL",
@@ -206,7 +205,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["rtlnieuws.nl", "bright.nl"],
-        "title_query": "div.article-title-width > h1.node-title"
+        "title_query": ["div.article-title-width > h1.node-title"]
       },
       {
         "name": "Trouw",
@@ -218,7 +217,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["trouw.nl"],
-        "title_query": "h1.article__header__title"
+        "title_query": ["h1.article__header__title"]
       },
       {
         "name": "Parool",
@@ -241,7 +240,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["parool.nl"],
-        "title_query": "h1.article__title"
+        "title_query": ["h1.article__title"]
       },
       {
         "name": "Limburger",
@@ -257,7 +256,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["limburger.nl"],
-        "title_query": "div > header.article__header > h1"
+        "title_query": ["div > header.article__header > h1"]
       },
       {
         "name": "FD",
@@ -269,7 +268,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["fd.nl"],
-        "title_query": ".head.full.social-quotable > h1"
+        "title_query": [".head.full.social-quotable > h1"]
       },
       {
         "name": "HVNL",
@@ -281,7 +280,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["hartvannederland.nl"],
-        "title_query": "div.header-data > h1.article-heading"
+        "title_query": ["div.header-data > h1.article-heading"]
       },
       {
         "name": "DVHN",
@@ -293,7 +292,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["dvhn.nl"],
-        "title_query": "article.artikeltekst > header > h1"
+        "title_query": ["article.artikeltekst > header > h1"]
       },
       {
         "name": "LC",
@@ -305,7 +304,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["lc.nl"],
-        "title_query": "article > header > h1"
+        "title_query": ["article > header > h1"]
       },
       {
         "name": "RD",
@@ -328,7 +327,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["rd.nl"],
-        "title_query": "#story-heading"
+        "title_query": ["#story-heading"]
       },
       {
         "name": "Elsevier",
@@ -340,7 +339,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["elsevierweekblad.nl"],
-        "title_query": "main > article > header > h1.entry-title"
+        "title_query": ["main > article > header > h1.entry-title"]
       },
       {
         "name": "BNR",
@@ -352,7 +351,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["bnr.nl"],
-        "title_query": "article.full > h1"
+        "title_query": ["article.full > h1"]
       }
     ],
     "us": [
@@ -375,7 +374,7 @@
         "page_id_location": "var",
         "page_id_query": "CBSNEWS.tracking.articleId",
         "match_domains": ["cbsnews.com"],
-        "title_query": "player__bottom-bar > h1.heading__now-playing"
+        "title_query": ["player__bottom-bar > h1.heading__now-playing"]
       },
       {
         "name": "CNN",
@@ -409,7 +408,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["cnn.com", "edition.cnn.com"],
-        "title_query": ".l-container > h1.pg-headline"
+        "title_query": [".l-container > h1.pg-headline"]
       },
       {
         "name": "MSNBC",
@@ -423,7 +422,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["msnbc.com"],
-        "title_query": "div[class^=\"titleAndShare_\"] > h1[class^=\"title_\"]"
+        "title_query": ["div[class^=\"titleAndShare_\"] > h1[class^=\"title_\"]"]
       },
       {
         "name": "The New York Times",
@@ -461,7 +460,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["nytimes.com"],
-        "title_query": "span.balancedHeadline"
+        "title_query": ["h1[itemprop=\"headline\"]"]
       },
       {
         "name": "Los Angeles Times",
@@ -475,7 +474,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["latimes.com"],
-        "title_query": "h1.spaced"
+        "title_query": ["h1.spaced"]
       },
       {
         "name": "USA Today",
@@ -494,7 +493,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["usatoday.com"],
-        "title_query": "h1[itemprop=\"headline\"]"
+        "title_query": ["h1.title"]
       },
       {
         "name": "The Wall Street Journal",
@@ -511,7 +510,7 @@
         "page_id_location": "var",
         "page_id_query": "INITIAL_PROPS_HEADER.context.articleId",
         "match_domains": ["wsj.com"],
-        "title_query": "h1.wsj-article-headline"
+        "title_query": ["h1.wsj-article-headline"]
       },
       {
         "name": "VICE",
@@ -554,7 +553,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["vice.com"],
-        "title_query": "h1.article__title"
+        "title_query": ["h1.heading"]
       },
       {
         "name": "VICE News",
@@ -569,7 +568,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["news.vice.com"],
-        "title_query": "h2.headline > span"
+        "title_query": ["h2.headline > span"]
       },
       {
         "name": "Huffpost",
@@ -583,7 +582,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["huffingtonpost.com"],
-        "title_query": "h1.headline__title"
+        "title_query": ["h1.headline__title"]
       },
       {
         "name": "TMZ",
@@ -597,7 +596,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["huffingtonpost.com"],
-        "title_query": "h1.headline__title"
+        "title_query": ["h1.headline__title"]
       },
       {
         "name": "Newsweek",
@@ -611,7 +610,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["newsweek.com"],
-        "title_query": "h1[itemprop=\"headline\"]"
+        "title_query": ["h1[itemprop=\"headline\"]"]
       },
       {
         "name": "Time",
@@ -625,7 +624,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["time.com"],
-        "title_query": "h1.headline"
+        "title_query": ["h1.headline"]
       }
     ],
     "uk": [
@@ -644,7 +643,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["theguardian.com"],
-        "title_query": "h1[itemprop=\"headline\"]"
+        "title_query": ["h1[itemprop=\"headline\"]"]
       },
       {
         "name": "Reuters",
@@ -674,7 +673,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["reuters.com"],
-        "title_query": "h1.ArticleHeader_headline"
+        "title_query": ["h1.ArticleHeader_headline"]
       }
     ]
   }

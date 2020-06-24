@@ -1,0 +1,31 @@
+{
+  "extends": [
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "legacyDecorators": true
+    }
+  },
+  "rules": {
+    "no-console": 0,
+    "no-plusplus": 0,
+    "no-await-in-loop": 0,
+    "max-len": [
+      2,
+      {
+        "code": 250
+      }
+    ],
+    "object-curly-newline": 0,
+    "no-trailing-spaces": 1,
+    "@typescript-eslint/camelcase": 0,
+    "prefer-const": 1
+  },
+  "env": {
+    "node": true
+  }
+}
