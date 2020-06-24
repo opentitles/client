@@ -16,7 +16,7 @@
   "browser_action": {
     "default_icon": "icons/logo48.png",
     "default_title": "Suggest this website to OpenTitles",
-    "default_popup": "popup.html"
+    "default_popup": "popup/popup.html"
   },
   
   "content_scripts": [{

@@ -8,5 +8,5 @@ export interface MediumDefinition {
   page_id_location: string;
   page_id_query: string;
   match_domains: string[];
-  title_query: string;
+  title_query: string[];
 }

@@ -5,6 +5,7 @@ import { CONFIG } from "./config";
 const extapi = getBrowserAPI();
 
 // Answer to requests for title history
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 extapi.runtime.onMessage.addListener((request: BackgroundMessage, sender: unknown, sendResponse: (response?: any) => void) => {
   if (request.type == 'getarticle') {
     fetch(`${CONFIG.API_URL}/opentitles/article/${encodeURIComponent(request.medium)}/${encodeURIComponent(request.id)}`)
