@@ -1,0 +1,36 @@
+name: Prelease Checks
+
+on:
+  pull_request:
+    branches:    
+      - master
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Install dependencies
+        run: npm ci
+      - name: Run lint
+        run: npm run lint
+  build:
+    name: Build
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Install dependencies
+        run: npm ci
+      - name: Run build
+        run: npm run build

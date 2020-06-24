@@ -1,0 +1,39 @@
+{
+  "name": "bump",
+  "version": "1.0.28",
+  "description": "Bump Action",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint index.js",
+    "package": "ncc build index.js -o dist",
+    "test": "eslint index.js && jest",
+    "build": "ncc build index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+git@github.com:tool3/bump.git"
+  },
+  "keywords": [
+    "GitHub",
+    "Actions",
+    "JavaScript"
+  ],
+  "author": "Tal Hayut",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tool3/bump/issues"
+  },
+  "homepage": "https://github.com/tool3/bump#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/exec": "^1.0.4",
+    "@actions/github": "^3.0.0",
+    "actions-toolkit": "^5.0.0"
+  },
+  "devDependencies": {
+    "@zeit/ncc": "^0.22.3",
+    "eslint": "^7.3.1",
+    "husky": "^4.2.5",
+    "jest": "^26.1.0"
+  }
+}

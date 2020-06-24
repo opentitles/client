@@ -2,7 +2,6 @@ import { getBrowserAPI } from "./util/getBrowserAPI";
 import { FeedList } from "./domain/FeedList";
 import { MediumDefinition } from "./domain/MediumDefinition";
 import { dqs } from "./util/dqs";
-import { CONFIG } from "./config";
 import { Article } from "./domain/Article";
 import { getTitleElement } from "./util/getTitleElement";
 import { getIdForMedium } from "./util/getIdForMedium";
