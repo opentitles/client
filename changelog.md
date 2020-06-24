@@ -1,3 +1,6 @@
+### OpenTitles v2.1.0 (6/24/2020)
+This update add two Actions: one for testing a pre-release version (on pr to master) and one that triggers on a push to master. The last one will package the extension and publish a new version to Github and the Chrome webstore.
+
 ### 2.0
 Massive (and long overdue) rewrite to Typescript.
 
