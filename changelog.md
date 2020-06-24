@@ -1,3 +1,6 @@
+### OpenTitles v2.1.0 (6/24/2020)
+
+
 ### 2.0
 Massive (and long overdue) rewrite to Typescript.
 
