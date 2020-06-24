@@ -1,1 +1,1 @@
-*Make sure to enter a thorough description of the changes in this version, as the description of this pull-request will be used as the changelog for the new version*
+*Make sure to enter a thorough description of the changes in this version in the squashed commit, as the description of that commit will be used as the changelog for the new version*
