@@ -50,7 +50,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.bump_versions.outputs.version }}
+          tag_name: ${{ format('v{0}', steps.bump_versions.outputs.version) }}
           release_name: ${{ format('OpenTitles v{0}', steps.bump_versions.outputs.version) }}
           body: ${{ steps.bump_versions.outputs.description }}
 
