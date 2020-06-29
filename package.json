@@ -1,7 +1,7 @@
 {
   "name": "opentitles.client",
   "private": true,
-  "version": "2.1.0",
+  "version": "2.2.0",
   "scripts": {
     "build": "parcel build src/* --no-minify",
     "package": "crx3 -z OpenTitles.zip -o OpenTitles.crx dist",
