@@ -1,3 +1,25 @@
 {
-  "extends": ["github>fdebijl/renovate"]
+  "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/renovate.json",
+  "commitBodyTable": true,
+  "enabled": true,
+  "ignoreUnstable": true,
+  "prCreation": "immediate",
+  "updateNotScheduled": true,
+  "rangeStrategy": "auto",
+  "prHourlyLimit": 0,
+  "prConcurrentLimit": 0,
+  "packageRules": [
+    {
+      "groupName": "all dependencies",
+      "paths": ["+(package.json)"],
+      "semanticCommitType": "chore",
+      "updateTypes": ["major", "minor", "patch", "pin", "digest", "lockFileMaintenance", "rollback", "bump"],
+      "requiredStatusChecks": null,
+      "automerge": false,
+      "semanticCommits": true,
+      "schedule": [
+        "after 8am and before 5pm on monday"
+      ]
+    }
+  ]
 }
