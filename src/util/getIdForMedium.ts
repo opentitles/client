@@ -18,7 +18,7 @@ export const getIdForMedium = async (medium: MediumDefinition, retrycount = 1): 
         // Extensions are sandboxed as far global variables like window are concerned - the DOM is shared however.
         // For that reason we'll use this real stupid workaround to retrieve window[first_var], since we cant JSON.stringify window.
         const scriptTag = document.createElement('script');
-        const tagID = 'ot_window_extractor_' + generateRandomString();
+        const tagID = `ot_window_extractor_${generateRandomString()}`;
         scriptTag.id = tagID;
         scriptTag.type = 'text/javascript';
         scriptTag.text = `document.getElementById('${tagID}').innerText = JSON.stringify(window['${locations[0]}']);`;

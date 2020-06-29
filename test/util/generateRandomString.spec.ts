@@ -2,7 +2,9 @@ import { generateRandomString } from '../../src/util/generateRandomString';
 
 describe('generateRandomString', () => {
   it('should generate a string with length 16', () => {
-    expect(generateRandomString().length).toEqual(16);
+    for (let i = 0; i < 100; i++) {
+      expect(generateRandomString().length).toEqual(16);
+    }
   });
 
   it('should only use alphanumerical characters', () => {

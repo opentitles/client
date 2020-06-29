@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run tests
+        run: npm run test
+
       - name: Bump version
         uses: ./.github/actions/bump
         id: bump_versions
