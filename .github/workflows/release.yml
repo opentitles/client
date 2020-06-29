@@ -4,10 +4,9 @@ on:
   push:
     branches:    
       - master
-    paths-ignore:
-      - 'package.json'
-      - 'CHANGELOG.md'
-      - 'src/static/manifest.json'
+    paths:
+      - 'src/**'
+      - '!src/static/manifest.json'
 
 jobs:
   release:
