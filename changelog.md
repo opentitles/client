@@ -3,17 +3,18 @@
 
 ### OpenTitles v2.2.0 (6/29/2020)
 
-
 ### OpenTitles v2.1.0 (6/24/2020)
+Add automatic build script using Github Actions
 
-
-### 2.0
+### OpenTitles v2.0.0 (24/6/2020)
 Massive (and long overdue) rewrite to Typescript.
 
 - Definitions are now retrieved from the central definition repository for OpenTitles: <https://github.com/opentitles/definition>
+- Removed the server files from the repository, these were migrated to <https://github.com/opentitles/server> back in February
+- Rewrite the current codebase to TS
+- Add Parcel to package the TS files into a set of distributable JS files
 
-
-### 1.9 (5/5/2019)
+### OpenTitles v1.9 (5/5/2019)
 OpenTitles will now lookup the title history for an article via a background script proxy, instead of directly from the content script.
 This is more secure and is not blocked by future CORB-policies, such as those already in place in Chrome 73. 
 The version number will show up as 1.9.1 in browsers due to a certificate bug in Firefox disabling a previous release, forcing a .1 version increment.
@@ -23,19 +24,19 @@ The version number will show up as 1.9.1 in browsers due to a certificate bug in
 - Added floris.amsterdam (HTTPS only) as allowed host.
 - Properties in media.json are now lowercased as per best JSON-practices.
 
-### 1.8 (21/4/2019)
+### OpenTitles 1.8 (21/4/2019)
 NOS title selector changed
 
-### 1.7 (19/3/2019)
+### OpenTitles 1.7 (19/3/2019)
 Minor update to remove some broken feeds and add a few missing ones for NOS.
 
-### 1.6 (23/1/2019)
+### OpenTitles 1.6 (23/1/2019)
 Small definitions fix
 
-### 1.5 ()
+### OpenTitles 1.5 (21/1/2019)
 - Fixed window variable ID extraction for more than one property of window and added retries.
 
-### 1.4
+### OpenTitles 1.4 (19/1/2019)
 Add two new ways to extract the article ID from a page: var and page. 
 Previously the ID had to be included in the URL for the plugin to be able to match an article to our records, now it can also be extracted from a global/window JS variable or an element on the page.
 This update also includes definitions for some of the largest US media
@@ -62,10 +63,10 @@ This update also includes definitions for some of the largest US media
   - https://\*.theguardian.com/*
   - https://\*.reuters.com/*
 
-### 1.3
+### OpenTitles 1.3 (6/1/2019)
 Make the popup look a bit more polished.
 
-### 1.2
+### OpenTitles 1.2 (6/1/2019)
 Added important features that will make it a lot easier to start adding more media down the line.
 
 - Use unified media definitions shared by the server and the extension. This way media only have to be defined in one file.
@@ -74,8 +75,8 @@ Added important features that will make it a lot easier to start adding more med
 - Add a popup with a form to suggest the current website to be tracked by the API.
 - Add endpoints to the server to process these suggestions.
 
-### 1.1
+### OpenTitles 1.1 (8/12/2018)
 Small compatiblity fix for Firefox's implementation of XMLHttpRequest
 
-### 1.0
+### OpenTitles 1.0 (8/12/2018)
 Initial release

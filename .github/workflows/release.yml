@@ -4,10 +4,9 @@ on:
   push:
     branches:    
       - master
-    paths-ignore:
-      - 'package.json'
-      - 'CHANGELOG.md'
-      - 'src/static/manifest.json'
+    paths:
+      - 'src/**'
+      - '!src/static/manifest.json'
 
 jobs:
   release:
@@ -31,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run tests
+        run: npm run test
+
       - name: Bump version
         uses: ./.github/actions/bump
         id: bump_versions
@@ -50,7 +52,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.bump_versions.outputs.version }}
+          tag_name: ${{ format('v{0}', steps.bump_versions.outputs.version) }}
           release_name: ${{ format('OpenTitles v{0}', steps.bump_versions.outputs.version) }}
           body: ${{ steps.bump_versions.outputs.description }}
 
@@ -74,11 +76,11 @@ jobs:
           asset_name: OpenTitles.zip
           asset_content_type: application/zip
 
-      - name: Publish to Chrome Webstore
-        run: npm run publish-chrome
-        env:
-          CWS_CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
-          CWS_CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
-          CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+      #- name: Publish to Chrome Webstore
+      #  run: npm run publish-chrome
+      #  env:
+      #    CWS_CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+      #    CWS_CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+      #    CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
 
       #- name: Release to Firefox
