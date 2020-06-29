@@ -1,7 +1,11 @@
 ### OpenTitles v2.3.0 (6/29/2020)
-
+- Bump @types/chrome to 0.0.117
+- Bump @typescript-eslint/eslint-plugin to 3.4.0
+- Bump @typescript-eslint/parser to 3.4.0
+- Bump eslint to 7.3.1
 
 ### OpenTitles v2.2.0 (6/29/2020)
+Pin dependency versions
 
 ### OpenTitles v2.1.0 (6/24/2020)
 Add automatic build script using Github Actions
