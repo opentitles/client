@@ -3,6 +3,7 @@
   "private": true,
   "version": "2.1.0",
   "scripts": {
+    "test": "jasmine-ts --config=jasmine.config.json",
     "build": "parcel build src/* --no-minify",
     "package": "crx3 -z OpenTitles.zip -o OpenTitles.crx dist",
     "lint": "eslint \"./src/**/*.ts\" --max-warnings 2",
@@ -12,14 +13,19 @@
   "devDependencies": {
     "@types/chrome": "0.0.116",
     "@types/firefox-webext-browser": "^70.0.1",
+    "@types/jasmine": "^3.5.11",
     "@types/node": "13.13.12",
     "@typescript-eslint/eslint-plugin": "3.3.0",
     "@typescript-eslint/parser": "3.3.0",
     "chrome-webstore-upload-cli": "^1.2.0",
     "crx3": "^1.1.2",
     "eslint": "7.3.0",
+    "jasmine": "^3.5.0",
+    "jasmine-spec-reporter": "^5.0.2",
+    "jasmine-ts": "^0.3.0",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-static-files-copy": "^2.4.3",
+    "ts-node": "^8.10.2",
     "typescript": "3.9.5"
   },
   "staticFiles": {

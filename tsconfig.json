@@ -12,6 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "types": [
+      "jasmine",
       "chrome",
       "firefox-webext-browser"
     ]
