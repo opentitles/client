@@ -73,11 +73,11 @@ jobs:
           asset_name: OpenTitles.zip
           asset_content_type: application/zip
 
-      - name: Publish to Chrome Webstore
-        run: npm run publish-chrome
-        env:
-          CWS_CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
-          CWS_CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
-          CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+      #- name: Publish to Chrome Webstore
+      #  run: npm run publish-chrome
+      #  env:
+      #    CWS_CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+      #    CWS_CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+      #    CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
 
       #- name: Release to Firefox
