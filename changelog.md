@@ -1,4 +1,9 @@
-### OpenTitles v2.1.0 (24/6/2020)
+### OpenTitles v2.3.0 (6/29/2020)
+
+
+### OpenTitles v2.2.0 (6/29/2020)
+
+### OpenTitles v2.1.0 (6/24/2020)
 Add automatic build script using Github Actions
 
 ### OpenTitles v2.0.0 (24/6/2020)
