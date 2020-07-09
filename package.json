@@ -21,7 +21,7 @@
     "chrome-webstore-upload-cli": "1.2.0",
     "crx3": "1.1.2",
     "eslint": "7.4.0",
-    "jasmine": "^3.5.0",
+    "jasmine": "3.5.0",
     "jasmine-spec-reporter": "5.0.2",
     "jasmine-ts": "0.3.0",
     "jsdom": "16.2.2",
