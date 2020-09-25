@@ -1,3 +1,8 @@
+### OpenTitles v2.7.0 (9/25/2020)
+* ci: add firefox auto-publishing
+
+* fix: add path to source directory
+
 ### OpenTitles v2.6.0 (9/25/2020)
 * ci: add firefox auto-publishing
 
