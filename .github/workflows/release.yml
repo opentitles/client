@@ -15,6 +15,10 @@ jobs:
     steps:
       - name: Checkout client
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          clean: true
+          ref: master
 
       - name: Checkout definition
         uses: actions/checkout@v2
