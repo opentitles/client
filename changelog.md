@@ -1,3 +1,6 @@
+### OpenTitles v2.8.0 (9/25/2020)
+
+
 ### OpenTitles v2.7.0 (9/25/2020)
 * ci: add firefox auto-publishing
 
