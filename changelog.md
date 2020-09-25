@@ -1,3 +1,6 @@
+### OpenTitles v2.4.0 (9/25/2020)
+Fix popup not being visible
+
 ### OpenTitles v2.3.0 (6/29/2020)
 - Bump @types/chrome to 0.0.117
 - Bump @typescript-eslint/eslint-plugin to 3.4.0
