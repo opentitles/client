@@ -7,6 +7,7 @@ on:
     paths:
       - 'src/**'
       - '!src/static/manifest.json'
+  workflow_dispatch:
 
 jobs:
   release:
@@ -15,6 +16,10 @@ jobs:
     steps:
       - name: Checkout client
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          clean: true
+          ref: master
 
       - name: Checkout definition
         uses: actions/checkout@v2
@@ -76,11 +81,11 @@ jobs:
           asset_name: OpenTitles.zip
           asset_content_type: application/zip
 
-      #- name: Publish to Chrome Webstore
-      #  run: npm run publish-chrome
-      #  env:
-      #    CWS_CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
-      #    CWS_CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
-      #    CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
+      - name: Publish to Chrome Webstore
+        run: npm run publish-chrome
+        env:
+         CWS_CLIENT_ID: ${{ secrets.CWS_CLIENT_ID }}
+         CWS_CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
+         CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
 
       #- name: Release to Firefox
