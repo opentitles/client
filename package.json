@@ -7,7 +7,8 @@
     "build": "parcel build src/* --no-minify && tsc src/static/popup/popup.ts --outFile dist/popup/popup.js || true",
     "package": "crx3 -z OpenTitles.zip -o OpenTitles.crx dist",
     "lint": "eslint \"./src/**/*.ts\" --max-warnings 2",
-    "publish-chrome": "webstore upload --source OpenTitles.zip --auto-publish --extension-id ipcpballelfolmocdhfjijgmbljachog --client-id $CWS_CLIENT_ID --client-secret $CWS_CLIENT_SECRET --refresh-token $CWS_REFRESH_TOKEN"
+    "publish-chrome": "webstore upload --source OpenTitles.zip --auto-publish --extension-id ipcpballelfolmocdhfjijgmbljachog --client-id $CWS_CLIENT_ID --client-secret $CWS_CLIENT_SECRET --refresh-token $CWS_REFRESH_TOKEN",
+    "publish-firefox": "web-ext-submit --api-key=$FF_API_KEY --api-secret=$FF_API_SECRET"
   },
   "dependencies": {},
   "devDependencies": {
@@ -28,7 +29,9 @@
     "parcel-bundler": "1.12.4",
     "parcel-plugin-static-files-copy": "2.5.0",
     "ts-node": "8.10.2",
-    "typescript": "3.9.7"
+    "typescript": "3.9.7",
+    "web-ext": "^5.1.0",
+    "web-ext-submit": "^5.1.0"
   },
   "staticFiles": {
     "staticPath": "src/static",
