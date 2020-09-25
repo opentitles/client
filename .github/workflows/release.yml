@@ -88,4 +88,8 @@ jobs:
          CWS_CLIENT_SECRET: ${{ secrets.CWS_CLIENT_SECRET }}
          CWS_REFRESH_TOKEN: ${{ secrets.CWS_REFRESH_TOKEN }}
 
-      #- name: Release to Firefox
+      - name: Publish to Firefox Add-ons
+        run: npm run publish-firefox
+        env:
+         FF_API_KEY: ${{ secrets.FF_API_KEY }}
+         FF_API_SECRET: ${{ secrets.FF_API_SECRET }}
