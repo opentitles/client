@@ -10,9 +10,14 @@
         "48": "icons/logo48.png",
         "128": "icons/logo128.png"
     },
+    "applications": {
+        "gecko": {
+            "id": "{7ca22031-9534-410e-a7f7-bd21ba6bd4f5}"
+        }
+    },
     "browser_action": {
         "default_icon": "icons/logo48.png",
-        "default_title": "Suggest this website to OpenTitles",
+        "default_title": "Click to suggest this website to OpenTitles",
         "default_popup": "popup/popup.html"
     },
     "content_scripts": [
