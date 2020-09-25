@@ -1,3 +1,6 @@
+### OpenTitles v2.5.0 (9/25/2020)
+Fix popup not being visible
+
 ### OpenTitles v2.4.0 (9/25/2020)
 Fix popup not being visible
 
