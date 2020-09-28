@@ -30,8 +30,8 @@
     "parcel-plugin-static-files-copy": "2.5.0",
     "ts-node": "8.10.2",
     "typescript": "3.9.7",
-    "web-ext": "^5.1.0",
-    "web-ext-submit": "^5.1.0"
+    "web-ext": "5.1.0",
+    "web-ext-submit": "5.1.0"
   },
   "staticFiles": {
     "staticPath": "src/static",
