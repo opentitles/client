@@ -46,7 +46,9 @@ jobs:
         run: npm run build
 
       - name: Copy definition files
-        run: cp definition/media.json dist/
+        run: |
+          cp definition/media.json dist-chrome/
+          cp definition/media.json dist-firefox/
 
       - name: Cut zip and crx release
         run: npm run package

@@ -10,7 +10,7 @@
     "build-firefox": "parcel build src/* --no-minify --out-dir dist-firefox && tsc src/static/popup/popup.ts --outFile dist-firefox/popup/popup.js || true",
     "package": "npm run package-chrome && npm run package-firefox",
     "package-chrome": "crx3 -z OpenTitles-Chrome.zip -o OpenTitles-Chrome.crx dist-chrome",
-    "package-firefox": "crx3 -z OpenTitles-Firefox.zip -o OpenTitles-Chrome.crx dist-firefox",
+    "package-firefox": "crx3 -z OpenTitles-Firefox.zip -o OpenTitles-Firefox.crx dist-firefox",
     "publish-chrome": "webstore upload --source OpenTitles-Chrome.zip --auto-publish --extension-id ipcpballelfolmocdhfjijgmbljachog --client-id $CWS_CLIENT_ID --client-secret $CWS_CLIENT_SECRET --refresh-token $CWS_REFRESH_TOKEN || true",
     "publish-firefox": "web-ext-submit --api-key=$FF_API_KEY --api-secret=$FF_API_SECRET --source-dir dist-firefox || true"
   },
