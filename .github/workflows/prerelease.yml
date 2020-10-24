@@ -48,3 +48,19 @@ jobs:
         run: npm ci
       - name: Run tests
         run: npm run test
+  package:
+    name: Package
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Install dependencies
+        run: npm ci
+      - name: Run build
+        run: npm run build
+      - name: Run package
+        run: npm run package
