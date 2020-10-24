@@ -67,7 +67,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./OpenTitles.crx
+          asset_path: ./OpenTitles-Chrome.crx
           asset_name: OpenTitles.crx
           asset_content_type: application/x-chrome-extension
 
@@ -77,7 +77,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./OpenTitles.zip
+          asset_path: ./OpenTitles-Firefox.zip
           asset_name: OpenTitles.zip
           asset_content_type: application/zip
 

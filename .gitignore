@@ -63,14 +63,10 @@ typings/
 *.zip
 *.crx
 
-promo/
-
-server/media\.json
-
-client/media\.json
-
 edge/
 
 /dist
+/dist-chrome
+/dist-firefox
 
 .cache/
