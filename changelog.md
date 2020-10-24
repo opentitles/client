@@ -1,3 +1,12 @@
+### OpenTitles v2.11.0 (10/24/2020)
+* fix: make lang an optional prop on medium
+
+* fix: copy definitions to both build folders
+
+* fix: write firefox crx to right file
+
+* ci: also test ability to package extension
+
 ### OpenTitles v2.10.0 (10/24/2020)
 Use separate build paths for Chrome and Firefox so we can adjust the manifest for Chrome
 
