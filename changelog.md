@@ -1,3 +1,6 @@
+### OpenTitles v2.10.0 (10/24/2020)
+Use separate build paths for Chrome and Firefox so we can adjust the manifest for Chrome
+
 ### OpenTitles v2.9.0 (9/25/2020)
 
 

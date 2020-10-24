@@ -1,7 +1,7 @@
 {
   "name": "opentitles.client",
   "private": true,
-  "version": "2.9.0",
+  "version": "2.10.0",
   "scripts": {
     "test": "jasmine-ts --config=jasmine.config.json",
     "lint": "eslint \"./src/**/*.ts\" --max-warnings 2",
