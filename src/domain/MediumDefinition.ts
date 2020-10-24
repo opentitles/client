@@ -1,5 +1,6 @@
 export interface MediumDefinition {
   name: string;
+  lang: string;
   prefix: string;
   suffix: string;
   feeds: string[];

@@ -1,5 +1,6 @@
 export const CONFIG = {
-  API_URL: 'https://floris.amsterdam',
+  API_URL: 'https://api.opentitles.info',
+  API_VERSION: 2,
   MAX_RETRIES: {
     TITLE: 3,
     ID: 3

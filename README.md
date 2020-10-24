@@ -4,7 +4,7 @@
 
 *'History' logo by Sugeng Santoso*
 
-[Chrome](https://chrome.google.com/webstore/detail/opentitles/ipcpballelfolmocdhfjijgmbljachog) / [Mozzarella Firefox](https://addons.mozilla.org/en-GB/firefox/addon/opentitles/) / Edge (Coming soon)
+[Chrome](https://chrome.google.com/webstore/detail/opentitles/ipcpballelfolmocdhfjijgmbljachog) / [Mozzarella Firefox](https://addons.mozilla.org/en-GB/firefox/addon/opentitles/)
 
 OpenTitles is a browser addon that currently tracks changes to over 40 news sites, such as nos.nl, nytimes.com and theguardian.com. It adds a button to the headlines on these sites. When clicked, this button will show all recent changes to the title of this article.
 

@@ -8,7 +8,8 @@ const extapi = getBrowserAPI();
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 extapi.runtime.onMessage.addListener((request: BackgroundMessage, sender: unknown, sendResponse: (response?: any) => void) => {
   if (request.type == 'getarticle') {
-    fetch(`${CONFIG.API_URL}/opentitles/article/${encodeURIComponent(request.medium)}/${encodeURIComponent(request.id)}`)
+    // See https://opentitles.info/ for all endpoints
+    fetch(`${CONFIG.API_URL}/v${CONFIG.API_VERSION}/country/${request.medium.lang}/org/${encodeURIComponent(request.medium.name)}/article/${encodeURIComponent(request.id)}`)
       .then((response) => response.json())
       .then((result) => sendResponse(result));
   }

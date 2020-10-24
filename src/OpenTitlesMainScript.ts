@@ -28,6 +28,8 @@ fetch(extapi.extension.getURL('/media.json'))
       });
 
       if (medium) {
+        // Assign country to medium
+        medium.lang = key;
         break;
       }
     }
@@ -43,10 +45,10 @@ fetch(extapi.extension.getURL('/media.json'))
 
 /**
  * Query the background script for the title history of an article.
- * @param {string} medium The name of the medium to which the article belongs.
+ * @param {MediumDefinition} medium The medium to which the article belongs.
  * @param {string} articleID The ID of the article to query, must belong to an article published by $medium.
  */
-const getArticle = async (medium: string, articleID: string): Promise<Article> => {
+const getArticle = async (medium: MediumDefinition, articleID: string): Promise<Article> => {
   return new Promise((resolve) => {
     (extapi as typeof chrome).runtime.sendMessage({
       type: 'getarticle',
@@ -76,7 +78,7 @@ const doWhenMediumIsFound = async (medium: MediumDefinition) => {
     return;
   }
 
-  getArticle(medium.name, id).then((titlehist) => {
+  getArticle(medium, id).then((titlehist) => {
     if (typeof (titlehist) !== 'object') {
       titlehist = JSON.parse(titlehist);
     }
