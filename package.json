@@ -32,7 +32,7 @@
     "jsdom": "16.4.0",
     "parcel-bundler": "1.12.4",
     "parcel-plugin-static-files-copy": "2.5.0",
-    "ts-node": "9.0.0",
+    "ts-node": "<8",
     "typescript": "4.0.5",
     "web-ext": "5.2.0",
     "web-ext-submit": "5.1.0"
