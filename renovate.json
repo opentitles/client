@@ -16,10 +16,7 @@
       "updateTypes": ["major", "minor", "patch", "pin", "digest", "lockFileMaintenance", "rollback", "bump"],
       "requiredStatusChecks": null,
       "automerge": false,
-      "semanticCommits": true,
-      "schedule": [
-        "after 8am and before 5pm on monday"
-      ]
+      "semanticCommits": true
     }
   ]
 }
