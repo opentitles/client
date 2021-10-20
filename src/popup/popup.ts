@@ -7,22 +7,18 @@ const extapi = getBrowserAPI() as typeof chrome;
 
 fetch(extapi.runtime.getURL('/media.json'), {
   method: 'GET'
-}).then((result) => {
-  if (typeof(result) !== 'object') {
-    result = JSON.parse(result as string);
-  }
-
+}).then(response => response.json()).then((result) => {
   chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
     let medium;
     const url = new URL(tabs[0].url as string);
     const hostname = url.hostname.replace('www.', '');
 
-    for (const key in (result as unknown as FeedList).FEEDS) {
-      if ((result as unknown as FeedList).FEEDS.hasOwnProperty(key)) {
-        const feed = (result as unknown as FeedList).FEEDS[key];
+    for (const key in (result as unknown as FeedList).feeds) {
+      if ((result as unknown as FeedList).feeds.hasOwnProperty(key)) {
+        const feed = (result as unknown as FeedList).feeds[key];
 
         medium = (feed as any).find((entry: any) => {
-          return entry.MATCH_DOMAINS.includes(hostname);
+          return entry.match_domains.includes(hostname);
         });
 
         if (medium) {
@@ -30,6 +26,8 @@ fetch(extapi.runtime.getURL('/media.json'), {
         }
       }
     }
+
+    debugger;
 
     if (medium) {
       dqs('.status').textContent = 'This website is being tracked by OpenTitles. You can use this window on untracked websites to suggest they be added to the tracking list.';
@@ -45,7 +43,7 @@ fetch(extapi.runtime.getURL('/media.json'), {
           url: hostname
         };
 
-        fetch(`${CONFIG.API_URL}/${CONFIG.API_VERSION}/suggest`, {
+        fetch(`${CONFIG.API_URL}/v${CONFIG.API_VERSION}/suggest`, {
           method: 'POST',
           body: JSON.stringify(data),
           headers: {
