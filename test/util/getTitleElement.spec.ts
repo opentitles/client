@@ -35,7 +35,7 @@ describe('getTitleElement', () => {
   //   }, 1000)
   // });
 
-  it('should return null for selector with no results', async (done) => {
+  it('should return null for selector with no results', (done) => {
     setTimeout(() => {
       getTitleElement(mediumWithoutTitle).then((element) => {
         expect(element).toBeNull();
