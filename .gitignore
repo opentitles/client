@@ -70,3 +70,4 @@ edge/
 /dist-firefox
 
 .cache/
+.parcel-cache/

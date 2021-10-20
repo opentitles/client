@@ -4,7 +4,7 @@
 	<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Fake News Blocker</title>
+		<title>OpenTitles</title>
 		<script src="popup.js"></script>
 		<link rel="stylesheet" type="text/css" href="popup.css">
 	</head>
@@ -18,26 +18,14 @@
 		<div class="main">
       <div class="status"></div>   
 			<form class="suggestform hidden" action="#">
-          <p>All questions/checkboxes are optional, but the more you can fill out the easier it is for me to add this website to the list of media.</p>
-          <table>
-            <tr>
-              <td><label for="hasrss">Does this website offer <a href="https://en.wikipedia.org/wiki/RSS" target="_blank" rel="noopener">RSS</a>?</label></td>
-              <td><input type="checkbox" name="hasrss" id="hasrss"></td>
-            </tr>
-            <tr>
-              <td><label for="rss_overview">If so, at what URL?</label></td>
-              <td><input type="url" name="rss_overview" id="rss_overview"></span></td>
-            </tr>
-            <tr>
-              <td><label for="hasid">Do the links contain an ID? (Such as 381389 or nexjzd)</label></td>
-              <td><input type="checkbox" name="hasid" id="hasid"></span>   </td>
-            </tr>
-        </table> 
         <input type="submit" value="Submit">
 			</form>
 			
 		</div>
 		
+    <div class="footer">
+      OpenTitles v2.11.0
+    </div>
 	</body>
 	
 </html>
