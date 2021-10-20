@@ -60,7 +60,7 @@ Toolkit.run(async tools => {
       let manifest = fs.readFileSync('src/static/manifest.json', 'utf-8');
       manifest = JSON.parse(manifest);
       manifest.version = version;
-      fs.writeFileSync('src/static/manifest.json', JSON.stringify(manifest, null, 4));
+      fs.writeFileSync('src/static/manifest.json', JSON.stringify(manifest, null, 2));
 
       // Update changelog
       let changelog = fs.readFileSync('changelog.md', 'utf-8');

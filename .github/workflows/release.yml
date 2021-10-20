@@ -7,7 +7,6 @@ on:
     paths:
       - 'src/**'
       - '!src/static/manifest.json'
-  workflow_dispatch:
 
 jobs:
   release:
