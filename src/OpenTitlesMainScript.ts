@@ -8,7 +8,7 @@ import { getIdForMedium } from "./util/getIdForMedium";
 
 const extapi = getBrowserAPI();
 
-fetch(extapi.extension.getURL('/media.json'))
+fetch(extapi.runtime.getURL('/media.json'))
 .then((response) => response.json())
 .then(async (uncastResult) => {
   if (!uncastResult) {
