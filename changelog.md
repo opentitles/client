@@ -1,3 +1,10 @@
+### OpenTitles v2.12.0 (10/20/2021)
+* refactor: upgrade parcel to v2
+
+* fix: popup not detecting media in media.json
+
+* test: update reporter to use pretty printing
+
 ### OpenTitles v2.11.0 (10/24/2020)
 * fix: make lang an optional prop on medium
 
