@@ -17,7 +17,8 @@ fs.access(pathToManifest, (err) => {
     let manifest = fs.readFileSync(pathToManifest, 'utf-8');
     manifest = JSON.parse(manifest);
     delete manifest.applications;
-    fs.writeFileSync(pathToManifest, JSON.stringify(manifest, null, 4));
+    delete manifest.browser_specific_settings;
+    fs.writeFileSync(pathToManifest, JSON.stringify(manifest, null, 2));
     console.log('Removed applications key from manifest');
   }
   console.log('=====================================');
