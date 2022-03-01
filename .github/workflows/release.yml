@@ -14,14 +14,14 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout client
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           clean: true
           ref: master
 
       - name: Checkout definition
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: opentitles/definition
           path: definition
