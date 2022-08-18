@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/tool3/bump#readme",
   "dependencies": {
-    "@actions/core": "^1.2.6",
+    "@actions/core": "^1.9.1",
     "@actions/exec": "^1.0.4",
     "@actions/github": "^5.0.0",
     "actions-toolkit": "^6.0.0"
