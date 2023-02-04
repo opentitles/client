@@ -27,8 +27,6 @@ fetch(extapi.runtime.getURL('/media.json'), {
       }
     }
 
-    debugger;
-
     if (medium) {
       dqs('.status').textContent = 'This website is being tracked by OpenTitles. You can use this window on untracked websites to suggest they be added to the tracking list.';
     } else {

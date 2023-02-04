@@ -3,7 +3,6 @@ const { exec } = require('@actions/exec');
 const github = require('@actions/github');
 const { Toolkit } = require('actions-toolkit');
 const fs = require('fs');
-const { mainModule } = require('process');
 
 const STRATEGIES = [
   '#minor',
@@ -13,10 +12,7 @@ const STRATEGIES = [
 Toolkit.run(async tools => {
   {
     try {
-      // Get commit message
-      // Get commit description
-
-      // get context
+      // Get context
       const { pusher: { email, name }, head_commit: { message } } = github.context.payload;
 
       // get input credentials
@@ -36,7 +32,7 @@ Toolkit.run(async tools => {
 
       tools.log(`Latest commit message: ${commitMessage}`);
       tools.log(`Extracted description: ${description}`)
-      tools.log(`Running with ${userName} ${userEmail} and bumping strategy ${strategy}`);
+      tools.log(`Running with ${userName} (${userEmail}) and bumping strategy ${strategy}`);
       tools.log(`Branch is ${inputBranch}`);
 
       // git login and pull
@@ -71,11 +67,13 @@ Toolkit.run(async tools => {
       const bumpCommitMessage = `${prefix || 'chore(deps):'} bump version to ${version}`
       await exec('git', ['commit', '-am', bumpCommitMessage])
       await exec('git', ['push', 'origin', `HEAD:${inputBranch}`])
+      const ref = await getExecOutput('git', ['rev-parse', 'HEAD']);
+      core.info(`Ref for bump commit was '${ref}'`);
 
-      // set output version
-      core.setOutput('version', version);
-      core.setOutput('message', commitMessage)
-      core.setOutput('description', description)
+      core.setOutput('bump_version', version);
+      core.setOutput('bump_message', commitMessage)
+      core.setOutput('bump_description', description)
+      core.setOutput('bump_ref', ref);
     }
     catch (error) {
       core.setFailed(error.message);
