@@ -13,7 +13,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["nos.nl", "jeugdjournaal.nl"],
-        "title_query": ["h1[class*=title]"]
+        "title_query": ["h1[class*=title]", "main h1"]
       },
       {
         "name": "AD",
@@ -57,7 +57,6 @@
           "hengelo",
           "hoeksche-waard",
           "kampen",
-          "lelystad",
           "nijmegen",
           "oldenzaal",
           "oosterhout",
@@ -104,18 +103,18 @@
       },
       {
         "name": "Telegraaf",
-        "prefix": "https://telegraaf.nl/",
+        "prefix": "https://www.telegraaf.nl/",
         "suffix": "",
         "feeds": ["rss"],
         "id_container": "guid",
-        "id_mask": "([0-9]){7}",
+        "id_mask": "([0-9]){7,9}",
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["telegraaf.nl"],
         "title_query": ["h1.ArticleTitleBlock__title"]
       },
       {
-        "name": "NU.nl",
+        "name": "NUnl",
         "prefix": "https://nu.nl/rss/",
         "suffix": "",
         "feeds": [
@@ -133,11 +132,11 @@
           "Gezondheid"
         ],
         "id_container": "guid",
-        "id_mask": "([0-9]){7}",
+        "id_mask": "([0-9]){6,7}",
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["nu.nl"],
-        "title_query": [".headerimage .title.fluid"]
+        "title_query": [".headerimage .title.fluid", ".block-content > .caption > h1", "h1.image-header-block__title"]
       },
       {
         "name": "Tweakers",
@@ -171,7 +170,6 @@
           "voorpagina",
           "nieuws-achtergrond",
           "columns-opinie",
-          "video",
           "wetenschap",
           "mensen",
           "de-gids",
@@ -181,11 +179,11 @@
           "sport"
         ],
         "id_container": "link",
-        "id_mask": "~([a-z0-9]){8}",
+        "id_mask": "(~([a-z0-9]){7,8})|([0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12})",
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["volkskrant.nl"],
-        "title_query": [".artstyle__header-title"]
+        "title_query": [".artstyle__header-title", "h1.title", "h1.artstyle__header-title", ".h1-headline"]
       },
       {
         "name": "RTL",
@@ -195,7 +193,7 @@
           "rss.xml",
           "economie",
           "sport",
-          "boulevard",
+          "entertainment",
           "tech",
           "lifestyle",
           "editienl"
@@ -205,7 +203,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["rtlnieuws.nl", "bright.nl"],
-        "title_query": ["div.article-title-width > h1.node-title"]
+        "title_query": ["div.article-title-width > h1.node-title", ".video-content > h1", "h1.article__title"]
       },
       {
         "name": "Trouw",
@@ -217,7 +215,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["trouw.nl"],
-        "title_query": ["h1.article__header__title"]
+        "title_query": ["h1.artstyle__header-title"]
       },
       {
         "name": "Parool",
@@ -230,17 +228,17 @@
           "verkiezingen",
           "opinie",
           "sport",
-          "kust-media",
+          "kunst-media",
           "binnenland",
           "buitenland",
           "trending"
         ],
         "id_container": "guid",
-        "id_mask": "([0-9]){7}",
+        "id_mask": "~([a-z0-9]){7,8}",
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["parool.nl"],
-        "title_query": ["h1.article__title"]
+        "title_query": [".artstyle__header-title"]
       },
       {
         "name": "Limburger",
@@ -276,7 +274,7 @@
         "suffix": "",
         "feeds": ["feed"],
         "id_container": "guid",
-        "id_mask": "([0-9]){7}",
+        "id_mask": "\/([^/]*)\/[^/]*$",
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["hartvannederland.nl"],
@@ -292,7 +290,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["dvhn.nl"],
-        "title_query": ["article.artikeltekst > header > h1"]
+        "title_query": ["h1.article-page__title"]
       },
       {
         "name": "LC",
@@ -304,7 +302,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["lc.nl"],
-        "title_query": ["article > header > h1"]
+        "title_query": ["h1.article-page__title"]
       },
       {
         "name": "RD",
@@ -356,7 +354,7 @@
     ],
     "us": [
       {
-        "name": "CBS News",
+        "name": "CBS",
         "prefix": "https://www.cbsnews.com/latest/rss/",
         "suffix": "",
         "feeds": [
@@ -374,7 +372,35 @@
         "page_id_location": "var",
         "page_id_query": "CBSNEWS.tracking.articleId",
         "match_domains": ["cbsnews.com"],
-        "title_query": ["player__bottom-bar > h1.heading__now-playing"]
+        "title_query": [".player__bottom-bar h1.now-playing__hed", "h1.content__title", "header > h1"]
+      },
+      {
+        "name": "CNNUS",
+        "prefix": "http://rss.cnn.com/rss/",
+        "suffix": ".rss",
+        "feeds": [
+          "cnn_topstories",
+          "cnn_world",
+          "cnn_us",
+          "cnn_allpolitics",
+          "cnn_tech",
+          "cnn_health",
+          "cnn_showbiz",
+          "cnn_travel"
+        ],
+        "id_container": "guid",
+        "id_mask": "\/([^/]*)\/[^/]*$",
+        "page_id_location": "url",
+        "page_id_query": "",
+        "match_domains": ["us.cnn.com"],
+        "title_query": [
+          "h1.pg-headline",
+          "h1.Article__title",
+          "h1.PageHead__title",
+          "h1.ArticlePage-headline",
+          ".pg-rail .el__video-collection__meta-wrapper > h1.media__video-headline",
+          "h1.headline__text"
+        ]
       },
       {
         "name": "CNN",
@@ -408,7 +434,15 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["cnn.com", "edition.cnn.com"],
-        "title_query": [".l-container > h1.pg-headline"]
+        "title_query": [
+          ".l-container > h1.pg-headline",
+          "h1.Article__title", 
+          "h1.PageHead__title", 
+          "h1.article-title",
+          "h1.pg-headline",
+          ".pg-rail .el__video-collection__meta-wrapper > h1.media__video-headline",
+          "h1.headline__text"
+        ]
       },
       {
         "name": "MSNBC",
@@ -418,11 +452,14 @@
           "latest"
         ],
         "id_container": "link",
-        "id_mask": "([0-9]{13})",
+        "id_mask": "([0-9]{12,13})",
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["msnbc.com"],
-        "title_query": ["div[class^=\"titleAndShare_\"] > h1[class^=\"title_\"]"]
+        "title_query": [
+          "div[class^=\"titleAndShare_\"] > h1[class^=\"title_\"]",
+          "h1[data-test=\"article-hero__headline\"]"
+        ]
       },
       {
         "name": "The New York Times",
@@ -451,7 +488,6 @@
           "Environment",
           "Space",
           "Health",
-          "Research",
           "HealthCarePolicy",
           "HomePage"
         ],
@@ -460,7 +496,11 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["nytimes.com"],
-        "title_query": ["h1[itemprop=\"headline\"]"]
+        "title_query": [
+          "h1[itemprop=\"headline\"]",
+          "header h1",
+          "h1[data-testid=\"headline\"]"
+        ]
       },
       {
         "name": "Los Angeles Times",
@@ -474,7 +514,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["latimes.com"],
-        "title_query": ["h1.spaced"]
+        "title_query": ["h1.spaced", ".headline"]
       },
       {
         "name": "USA Today",
@@ -493,7 +533,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["usatoday.com"],
-        "title_query": ["h1.title"]
+        "title_query": ["h1"]
       },
       {
         "name": "The Wall Street Journal",
@@ -506,11 +546,11 @@
           "RSSLifestyle"
         ],
         "id_container": "guid",
-        "id_mask": "(SB)([0-9]{41})",
+        "id_mask": "((SB)([0-9]{41}))|(WP-WSJ-[0-9]{8,12})",
         "page_id_location": "var",
         "page_id_query": "INITIAL_PROPS_HEADER.context.articleId",
         "match_domains": ["wsj.com"],
-        "title_query": ["h1.wsj-article-headline"]
+        "title_query": ["h1.wsj-article-headline", "h1[itemprop=\"headline\"]"]
       },
       {
         "name": "VICE",
@@ -518,17 +558,11 @@
         "suffix": "/rss",
         "feeds": [
           "en_us",
-          "fr_ca",
-          "en_ca",
           "de",
-          "sv",
           "en_au",
           "en_uk",
           "es",
-          "es_ar",
-          "es_co",
           "fr",
-          "pl",
           "nl",
           "it",
           "jp",
@@ -542,10 +576,7 @@
           "id_id",
           "en_nz",
           "en_in",
-          "da",
           "ar",
-          "de_at",
-          "de_ch",
           "fr_be"
         ],
         "id_container": "link",
@@ -553,22 +584,21 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["vice.com"],
-        "title_query": ["h1.heading"]
+        "title_query": ["h1.heading", ".article__header h1", ".smart-header > h1"]
       },
       {
-        "name": "VICE News",
+        "name": "VICENews",
         "prefix": "https://news.vice.com/",
         "suffix": "/rss",
         "feeds": [
-          "en_us",
-          "en_ca"
+          "en_us"
         ],
         "id_container": "link",
-        "id_mask": "(\b[a-z_]{2,5})\/(article)\/([a-z0-9]{6}\b)",
+        "id_mask": "(\\b[a-z_]{2,5})\\/(article)\\/([a-z0-9]{6}\\b)",
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["news.vice.com"],
-        "title_query": ["h2.headline > span"]
+        "title_query": ["h2.headline > span", "h1"]
       },
       {
         "name": "Huffpost",
@@ -578,11 +608,11 @@
           "front-page"
         ],
         "id_container": "guid",
-        "id_mask": "([a-z]{2})_([0-9a-z]{24})",
+        "id_mask": "([0-9a-z]{24})",
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["huffingtonpost.com"],
-        "title_query": ["h1.headline__title"]
+        "title_query": ["h1.headline__title", "h1.headline"]
       },
       {
         "name": "TMZ",
@@ -596,7 +626,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["huffingtonpost.com"],
-        "title_query": ["h1.headline__title"]
+        "title_query": ["h1.article__headline-title"]
       },
       {
         "name": "Newsweek",
@@ -610,7 +640,7 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["newsweek.com"],
-        "title_query": ["h1[itemprop=\"headline\"]"]
+        "title_query": ["h1[itemprop=\"headline\"]", "h1.title"]
       },
       {
         "name": "Time",
@@ -629,7 +659,7 @@
     ],
     "uk": [
       {
-        "name": "The Guardian",
+        "name": "TheGuardian",
         "prefix": "http://www.theguardian.com/",
         "suffix": "/rss",
         "feeds": [
@@ -643,37 +673,11 @@
         "page_id_location": "url",
         "page_id_query": "",
         "match_domains": ["theguardian.com"],
-        "title_query": ["h1[itemprop=\"headline\"]"]
-      },
-      {
-        "name": "Reuters",
-        "prefix": "http://feeds.reuters.com/",
-        "suffix": "",
-        "feeds": [
-          "news/artsculture",
-          "reuters/businessNews",
-          "reuters/companyNews",
-          "reuters/entertainment",
-          "reuters/environment",
-          "reuters/healthNews",
-          "reuters/lifestyle",
-          "news/wealth",
-          "reuters/oddlyEnoughNews",
-          "reuters/peopleNews",
-          "Reuters/PoliticsNews",
-          "reuters/scienceNews",
-          "reuters/sportsNews",
-          "reuters/technologyNews",
-          "reuters/topNews",
-          "Reuters/domesticNews",
-          "Reuters/worldNews"
-        ],
-        "id_container": "guid",
-        "id_mask": "id([A-Z0-9]{11})",
-        "page_id_location": "url",
-        "page_id_query": "",
-        "match_domains": ["reuters.com"],
-        "title_query": ["h1.ArticleHeader_headline"]
+        "title_query": [
+          "h1[itemprop=\"headline\"]", 
+          "h1 > span", 
+          "div[data-gu-name=\"headline\"] h1"
+        ]
       }
     ]
   }
