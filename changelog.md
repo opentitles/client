@@ -1,3 +1,8 @@
+### OpenTitles v2.16.0 (2/4/2023)
+* ci: fix deprecations
+
+* ci: update bump action
+
 ### OpenTitles v2.15.0 (2/4/2023)
 * chore(deps): update all dependencies
 
