@@ -40,7 +40,6 @@ jobs:
 
       - name: Bump version
         uses: ./.github/actions/bump
-        id: bump_versions
 
       - name: Compile plugin
         run: npm run build
@@ -54,34 +53,15 @@ jobs:
         run: npm run package
 
       - name: Publish to Github
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ format('v{0}', steps.bump_versions.outputs.version) }}
-          release_name: ${{ format('OpenTitles v{0}', steps.bump_versions.outputs.version) }}
-          body: ${{ steps.bump_versions.outputs.description }}
-
-      - name: Add Chrome binaries
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./OpenTitles-Chrome.crx
-          asset_name: OpenTitles.crx
-          asset_content_type: application/x-chrome-extension
-
-      - name: Add Firefox (generic) binaries
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./OpenTitles-Firefox.zip
-          asset_name: OpenTitles.zip
-          asset_content_type: application/zip
+          tag_name: ${{ format('v{0}', env.bump_version) }}
+          name: ${{ format('OpenTitles v{0}', env.bump_version) }}
+          body: ${{ env.bump_description }}
+          target_commitish: ${{ env.bump_ref }}
+          files: |
+            OpenTitles-Chrome.crx
+            OpenTitles-Firefox.zip
 
       - name: Publish to Chrome Webstore
         run: npm run publish-chrome
