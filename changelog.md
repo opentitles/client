@@ -1,3 +1,8 @@
+### OpenTitles v2.15.0 (2/4/2023)
+* chore(deps): update all dependencies
+
+* ci: update actions
+
 ### OpenTitles v2.14.0 (10/20/2021)
 
 
