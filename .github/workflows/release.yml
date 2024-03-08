@@ -53,7 +53,7 @@ jobs:
         run: npm run package
 
       - name: Publish to Github
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ format('v{0}', env.bump_version) }}
           name: ${{ format('OpenTitles v{0}', env.bump_version) }}
