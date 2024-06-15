@@ -1,3 +1,10 @@
+### OpenTitles v2.17.0 (15/06/2024)
+* chore: update dependencies
+
+* chore: add editorconfig
+
+* chore: update github action versions
+
 ### OpenTitles v2.16.0 (2/4/2023)
 * ci: fix deprecations
 
