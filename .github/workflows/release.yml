@@ -2,16 +2,19 @@ name: Release
 
 on:
   push:
-    branches:    
+    branches:
       - master
     paths:
       - 'src/**'
       - '!src/static/manifest.json'
 
+env:
+  NODE_VERSION: 20
+
 jobs:
   release:
     name: Build and Release
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout client
         uses: actions/checkout@v3
@@ -29,7 +32,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
       - name: Install dependencies
