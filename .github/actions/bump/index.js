@@ -62,7 +62,9 @@ Toolkit.run(async tools => {
       let changelog = fs.readFileSync('changelog.md', 'utf-8');
       changelog = `### OpenTitles v${version} (${new Date(Date.now()).toLocaleString('en-GB').split(',')[0]})\n${description}\n\n${changelog}`;
       fs.writeFileSync('changelog.md', changelog);
-      
+
+      // TODO: Also add commits that contributed to this version to the changelog
+
       // Stage all files and push new version
       const bumpCommitMessage = `${prefix || 'chore(deps):'} bump version to ${version}`
       await exec('git', ['commit', '-am', bumpCommitMessage])

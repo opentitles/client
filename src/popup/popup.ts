@@ -2,22 +2,24 @@ import { CONFIG } from "../config";
 import { dqs } from "../util/dqs";
 import { FeedList } from "../domain/FeedList";
 import { getBrowserAPI } from "../util/getBrowserAPI";
+import { MediumDefinition } from '../domain/MediumDefinition';
 
 const extapi = getBrowserAPI() as typeof chrome;
 
 fetch(extapi.runtime.getURL('/media.json'), {
   method: 'GET'
-}).then(response => response.json()).then((result) => {
+}).then(response => response.json() as Promise<{ feeds: FeedList }>).then((mediaList) => {
   chrome.tabs.query({'active': true, 'currentWindow': true}, (tabs) => {
     let medium;
     const url = new URL(tabs[0].url as string);
     const hostname = url.hostname.replace('www.', '');
+    const feeds = mediaList.feeds;
 
-    for (const key in (result as unknown as FeedList).feeds) {
-      if ((result as unknown as FeedList).feeds.hasOwnProperty(key)) {
-        const feed = (result as unknown as FeedList).feeds[key];
+    for (const country in feeds) {
+      if (feeds.hasOwnProperty(country)) {
+        const feed = mediaList.feeds[country];
 
-        medium = (feed as any).find((entry: any) => {
+        medium = (feed as MediumDefinition[]).find((entry) => {
           return entry.match_domains.includes(hostname);
         });
 
