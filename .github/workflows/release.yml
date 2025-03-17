@@ -17,14 +17,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout client
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
           clean: true
           ref: master
 
       - name: Checkout definition
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: opentitles/definition
           path: definition
