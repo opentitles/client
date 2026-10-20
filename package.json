@@ -26,7 +26,7 @@
     "@types/jasmine": "3.10.18 <4",
     "@types/jsdom": "21.1.7",
     "@types/node": "20.14.2",
-    "@typescript-eslint/eslint-plugin": "7.13.0",
+    "@typescript-eslint/eslint-plugin": "8.70.1",
     "@typescript-eslint/parser": "7.13.0",
     "chrome-webstore-upload-cli": "3.3.0",
     "cpx": "1.5.0",
