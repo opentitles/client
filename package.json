@@ -21,7 +21,7 @@
   "devDependencies": {
     "@parcel/config-default": "2.12.0",
     "@parcel/transformer-typescript-tsc": "2.12.0",
-    "@types/chrome": "0.0.268",
+    "@types/chrome": "0.3.4",
     "@types/firefox-webext-browser": "120.0.3",
     "@types/jasmine": "3.10.18 <4",
     "@types/jsdom": "21.1.7",
